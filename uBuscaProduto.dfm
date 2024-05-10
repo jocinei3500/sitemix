@@ -1,6 +1,6 @@
 object frBuscaProduto: TfrBuscaProduto
-  Left = 271
-  Top = 230
+  Left = 353
+  Top = 228
   Width = 421
   Height = 259
   Caption = 'frBuscaProduto'
@@ -27,7 +27,7 @@ object frBuscaProduto: TfrBuscaProduto
     Font.Style = []
     ParentFont = False
   end
-  object edBuscaParceiro: TEdit
+  object edBuscaProduto: TEdit
     Left = 16
     Top = 40
     Width = 377
@@ -39,12 +39,15 @@ object frBuscaProduto: TfrBuscaProduto
     Font.Style = []
     ParentFont = False
     TabOrder = 0
+    OnChange = edBuscaProdutoChange
+    OnKeyDown = edBuscaProdutoKeyDown
   end
   object dbgProdutos: TDBGrid
     Left = 16
     Top = 64
     Width = 377
     Height = 145
+    DataSource = dmData.dsProdutro
     Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
@@ -52,6 +55,7 @@ object frBuscaProduto: TfrBuscaProduto
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
+    OnDblClick = dbgProdutosDblClick
     Columns = <
       item
         Expanded = False

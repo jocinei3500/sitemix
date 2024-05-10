@@ -15,6 +15,8 @@ type
     zQueryX: TZQuery;
     dsX: TDataSource;
     qBUsca: TZQuery;
+    dsProdutro: TDataSource;
+    qProduto: TZQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     function databaseConnect:boolean;

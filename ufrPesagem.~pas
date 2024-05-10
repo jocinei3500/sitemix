@@ -40,6 +40,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btPesagemClick(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,7 +52,7 @@ var
 
 implementation
 
-uses uGetPeso, uBuscaParceiro;
+uses uGetPeso, uBuscaParceiro, uBuscaProduto;
 
 {$R *.dfm}
 
@@ -72,6 +73,11 @@ end;
 procedure TfrPesagem.SpeedButton2Click(Sender: TObject);
 begin
   frBuscaParceiro.showModal;
+end;
+
+procedure TfrPesagem.SpeedButton1Click(Sender: TObject);
+begin
+  frBuscaProduto.showModal;
 end;
 
 end.

@@ -47,6 +47,7 @@ object frBuscaParceiro: TfrBuscaParceiro
     Top = 64
     Width = 377
     Height = 145
+    DataSource = dmData.dsX
     Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET

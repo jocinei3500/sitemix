@@ -1,6 +1,6 @@
 object frPesagem: TfrPesagem
-  Left = 277
-  Top = 153
+  Left = 255
+  Top = 134
   Width = 1063
   Height = 551
   Caption = 'Pesagem'

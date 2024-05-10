@@ -20,29 +20,40 @@ object dmData: TdmData
   end
   object tParceiro: TZTable
     Connection = zConnLocal
-    Left = 72
-    Top = 72
+    Left = 120
+    Top = 64
   end
   object dsParceiro: TDataSource
     DataSet = tParceiro
-    Left = 72
-    Top = 120
+    Left = 120
+    Top = 112
   end
   object zQueryX: TZQuery
     Connection = zConnLocal
     Params = <>
     Left = 72
-    Top = 16
+    Top = 72
   end
   object dsX: TDataSource
     DataSet = zQueryX
-    Left = 120
-    Top = 16
+    Left = 72
+    Top = 120
   end
   object qBUsca: TZQuery
     Connection = zConnLocal
     Params = <>
-    Left = 168
+    Left = 80
     Top = 16
+  end
+  object dsProdutro: TDataSource
+    DataSet = qProduto
+    Left = 176
+    Top = 112
+  end
+  object qProduto: TZQuery
+    Connection = zConnLocal
+    Params = <>
+    Left = 176
+    Top = 64
   end
 end

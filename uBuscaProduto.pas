@@ -9,11 +9,16 @@ uses
 type
   TfrBuscaProduto = class(TForm)
     Label1: TLabel;
-    edBuscaParceiro: TEdit;
+    edBuscaProduto: TEdit;
     dbgProdutos: TDBGrid;
     procedure FormShow(Sender: TObject);
+    procedure edBuscaProdutoChange(Sender: TObject);
+    procedure edBuscaProdutoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure dbgProdutosDblClick(Sender: TObject);
   private
     procedure buscaProdutos;
+    procedure selectProduto;
     { private declarations }
   public
     { Public declarations }
@@ -31,10 +36,10 @@ uses uData, ufrPesagem;
 
 procedure TfrBuscaProduto.buscaProdutos;
 begin
-  dmData.zQueryX.Close;
-  dmData.zQueryX.SQL.Text:='SELECT ID, NOME FROM PARCEIROS WHERE NOME LIKE :parceiro';
-  dmData.zQueryX.ParamByName('parceiro').AsString:=edBuscaParceiro.Text + '%';
-  dmData.zQueryX.Open;
+  dmData.qProduto.Close;
+  dmData.qProduto.SQL.Text:='SELECT ID, NOME FROM PRODUTOS WHERE NOME LIKE :produto';
+  dmData.qProduto.ParamByName('produto').AsString:=edBuscaProduto.Text + '%';
+  dmData.qProduto.Open;
   dbgProdutos.Columns[0].FieldName:='id';
   dbgProdutos.Columns[1].FieldName:='nome';
 
@@ -42,13 +47,50 @@ end;
 
 procedure TfrBuscaProduto.FormShow(Sender: TObject);
 begin
-  edBuscaParceiro.SetFocus;
-  edBuscaParceiro.Clear;
-  dmData.qBusca.close;
-  dmData.qBusca.SQL.Text:='SELECT ID, NOME FROM PRODUTOS';
-  dmData.qBusca.Open;
+  edBuscaProduto.SetFocus;
+  edBuscaProduto.Clear;
+  dmData.qProduto.close;
+  dmData.qProduto.SQL.Text:='SELECT ID, NOME FROM PRODUTOS';
+  dmData.qProduto.Open;
   dbgProdutos.Columns[0].FieldName:='id';
   dbgProdutos.Columns[1].FieldName:='nome';
+end;
+
+procedure TfrBuscaProduto.edBuscaProdutoChange(Sender: TObject);
+begin
+  buscaProdutos;
+end;
+
+procedure TfrBuscaProduto.edBuscaProdutoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+// Verifica se a tecla pressionada é a seta para baixo
+  if Key = VK_DOWN then
+  begin
+    // Define o foco para o DBGrid
+    dbgProdutos.SetFocus;
+  end;
+end;
+
+procedure TfrBuscaProduto.selectProduto;
+var
+  id:integer;
+begin
+  id:=30;
+  id := dbgProdutos.DataSource.DataSet.FieldByName('id').AsInteger;
+  dmData.zQueryX.Close;
+  dmData.zQueryX.SQL.Text:='SELECT * FROM PARCEIROS WHERE id = :id';
+  dmData.zQueryX.ParamByName('id').AsInteger := id; // Define o valor do parâmetro ":id"
+  dmData.zQueryX.Open;
+  frPesagem.edCodProduto.Text:= IntToStr(dmData.zQueryX.FieldByName('id').AsInteger);
+
+  close;
+
+end;
+
+procedure TfrBuscaProduto.dbgProdutosDblClick(Sender: TObject);
+begin
+  selectProduto;
 end;
 
 end.
