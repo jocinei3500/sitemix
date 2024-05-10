@@ -1,0 +1,32 @@
+program Sitemix;
+
+uses
+  Forms,
+  uMain in 'uMain.pas' {frMain},
+  uBritagem in 'uBritagem.pas' {frBritagem},
+  ufrPesagem in 'ufrPesagem.pas' {frPesagem},
+  uConfigTags in '..\..\..\..\..\Downloads\delphimodbus-1.6.3\demos\Indy9\Master\uConfigTags.pas' {frConfigTags},
+  uData in 'images button\uData.pas' {dmData: TDataModule},
+  uGetPeso in 'images button\uGetPeso.pas' {frGetPeso},
+  uCadProduto in 'uCadProduto.pas' {frCadProduto},
+  uCadParceiro in 'uCadParceiro.pas' {frCadParceiro},
+  ConnectionThreadUnit in 'ConnectionThreadUnit.pas',
+  uBuscaParceiro in 'uBuscaParceiro.pas' {frBuscaParceiro},
+  uBuscaProduto in 'uBuscaProduto.pas' {frBuscaProduto};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TfrMain, frMain);
+  Application.CreateForm(TfrBritagem, frBritagem);
+  Application.CreateForm(TfrPesagem, frPesagem);
+  Application.CreateForm(TfrConfigTags, frConfigTags);
+  Application.CreateForm(TdmData, dmData);
+  Application.CreateForm(TfrGetPeso, frGetPeso);
+  Application.CreateForm(TfrCadProduto, frCadProduto);
+  Application.CreateForm(TfrCadParceiro, frCadParceiro);
+  Application.CreateForm(TfrBuscaParceiro, frBuscaParceiro);
+  Application.CreateForm(TfrBuscaProduto, frBuscaProduto);
+  Application.Run;
+end.

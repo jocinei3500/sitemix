@@ -1,0 +1,101 @@
+unit uCadParceiro;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, DBCtrls, Mask, Grids, DBGrids;
+
+type
+  TfrCadParceiro = class(TForm)
+    gbmain: TGroupBox;
+    gbcad: TGroupBox;
+    Label2: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    edRazaoSocial: TEdit;
+    edTelefone: TMaskEdit;
+    edNomeFantasia: TEdit;
+    GroupBox1: TGroupBox;
+    btnOk: TBitBtn;
+    btnExcluir: TBitBtn;
+    btFechar: TBitBtn;
+    btnAlterar: TBitBtn;
+    btnFiltro: TBitBtn;
+    btnRelatorio: TBitBtn;
+    dbgParceiros: TDBGrid;
+    Edit1: TEdit;
+    Label1: TLabel;
+    procedure btnOkClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    procedure cadastrar;
+    procedure getParceiros;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frCadParceiro: TfrCadParceiro;
+
+implementation
+
+uses
+  uData;
+
+{$R *.dfm}
+
+{ TfrCadParceiro }
+
+procedure TfrCadParceiro.cadastrar;
+var
+  razao_social, nome_fantasia,telefone,data_cadastro,contato:string;
+begin
+  razao_social:=edRazaoSocial.Text;
+  nome_fantasia:=edNomeFantasia.Text;
+  telefone:=edTelefone.Text;
+  data_cadastro:=edData.Text;
+  contato:=edContato.Text;
+
+  dmData.qParceiro.SQL.Text:='';
+  dmData.qParceiro.SQL.Text:=('INSERT INTO parceiros (id, razao_social,nome_fantasia,'+
+  ' telefone,data_cadastro, contato)'+
+  ' VALUES(:id, :razao_social, :nome_fantasia, :telefone, :data_cadastro, :contato)');
+  dmData.qParceiro.ParamByName('id').AsString:='null';
+  dmData.qParceiro.ParamByName('razao_social').AsString:=razao_social;
+  dmData.qParceiro.ParamByName('nome_fantasia').AsString:=nome_fantasia;
+  dmData.qParceiro.ParamByName('telefone').AsString:=telefone;
+  dmData.qParceiro.ParamByName('data_cadastro').AsString:=data_cadastro;
+  dmData.qParceiro.ParamByName('contato').AsString:=contato;
+  dmData.qParceiro.ExecSQL;
+  if dmData.qParceiro.RowsAffected >0 then
+    begin
+      showmessage('Cadastro realizado com sucesso!');
+    end;
+end;
+
+procedure TfrCadParceiro.btnOkClick(Sender: TObject);
+begin
+  cadastrar;
+end;
+
+
+
+procedure TfrCadParceiro.getParceiros;
+begin
+  dmData.tParceiro.TableName:='parceiros';
+  dmData.tParceiro.Active:=true;
+  dbgParceiros.Columns[0].FieldName:='razao_social';
+  dbgParceiros.Columns[1].FieldName:='nome_fantasia';
+  dbgParceiros.Columns[2].FieldName:='telefone';
+  dbgParceiros.Columns[3].FieldName:='data_cadastro';
+  dbgParceiros.Columns[4].FieldName:='contato';
+end;
+
+procedure TfrCadParceiro.FormShow(Sender: TObject);
+begin
+  getParceiros;
+end;
+
+end.
