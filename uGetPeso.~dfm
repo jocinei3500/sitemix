@@ -1,6 +1,6 @@
 object frGetPeso: TfrGetPeso
-  Left = 538
-  Top = 269
+  Left = 447
+  Top = 242
   Width = 281
   Height = 309
   Caption = 'Pesagem'
@@ -337,7 +337,7 @@ object frGetPeso: TfrGetPeso
     Font.Charset = ANSI_CHARSET
     Font.Color = clRed
     Font.Height = -67
-    Font.Name = 'Digital-7'
+    Font.Name = 'DS-Digital'
     Font.Style = [fsBold]
     ParentBiDiMode = False
     ParentFont = False

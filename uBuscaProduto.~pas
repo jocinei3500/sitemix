@@ -15,6 +15,9 @@ type
     procedure edBuscaProdutoChange(Sender: TObject);
     procedure edBuscaProdutoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure dbgProdutosDblClick(Sender: TObject);
+    procedure dbgProdutosKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     procedure buscaProdutos;
     procedure selectProduto;
@@ -37,7 +40,7 @@ procedure TfrBuscaProduto.buscaProdutos;
 begin
   dmData.qProduto.Close;
   dmData.qProduto.SQL.Text:='SELECT ID, NOME FROM PRODUTOS WHERE NOME LIKE :produto';
-  dmData.qProduto.ParamByName('produto').AsString:=edBuscaParceiro.Text + '%';
+  dmData.qProduto.ParamByName('produto').AsString:=edBuscaProduto.Text + '%';
   dmData.qProduto.Open;
   dbgProdutos.Columns[0].FieldName:='id';
   dbgProdutos.Columns[1].FieldName:='nome';
@@ -46,8 +49,8 @@ end;
 
 procedure TfrBuscaProduto.FormShow(Sender: TObject);
 begin
-  edBuscaParceiro.SetFocus;
-  edBuscaParceiro.Clear;
+  edBuscaProduto.SetFocus;
+  edBuscaProduto.Clear;
   dmData.qProduto.close;
   dmData.qProduto.SQL.Text:='SELECT ID, NOME FROM PRODUTOS';
   dmData.qProduto.Open;
@@ -68,14 +71,14 @@ begin
   begin
     // Define o foco para o DBGrid
     dbgProdutos.SetFocus;
-  end;
+  end else if key = VK_ESCAPE then
+    close;
 end;
 
 procedure TfrBuscaProduto.selectProduto;
 var
   id:integer;
 begin
-  id:=30;
   id := dbgProdutos.DataSource.DataSet.FieldByName('id').AsInteger;
   dmData.zQueryX.Close;
   dmData.zQueryX.SQL.Text:='SELECT * FROM PARCEIROS WHERE id = :id';
@@ -85,6 +88,24 @@ begin
 
   close;
 
+end;
+
+procedure TfrBuscaProduto.dbgProdutosDblClick(Sender: TObject);
+begin
+  selectProduto;
+end;
+
+procedure TfrBuscaProduto.dbgProdutosKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+// Verifica se a tecla pressionada é a tecla Enter
+  if Key = VK_RETURN then
+    begin
+      // Define o foco para o DBGrid
+      selectProduto;
+    end
+  else if key=VK_ESCAPE then
+    close
 end;
 
 end.

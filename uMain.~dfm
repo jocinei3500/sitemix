@@ -1,6 +1,6 @@
 object frMain: TfrMain
-  Left = 293
-  Top = 147
+  Left = 227
+  Top = 141
   Width = 1088
   Height = 563
   Caption = 'Sitemix Sistema de Gerenciamento'

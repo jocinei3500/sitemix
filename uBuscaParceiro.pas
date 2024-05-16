@@ -80,7 +80,9 @@ begin
   begin
     // Define o foco para o DBGrid
     dbgParceiros.SetFocus;
-  end;
+  end else if key= VK_ESCAPE then
+    close;
+
 end;
 
 procedure TfrBuscaParceiro.selectParceiro;
@@ -97,7 +99,9 @@ begin
   frPesagem.edNomeParceiro.Text:= dmData.qParceiro.FieldByName('nome').AsString;
   frPesagem.edEndereco.Text:= dmData.qParceiro.FieldByName('endereco').AsString;
   frPesagem.edMunicipio.Text:= dmData.qParceiro.FieldByName('municipio').AsString;
+  frPesagem.edCodProduto.SetFocus;
   close;
+
 
 end;
 
@@ -109,7 +113,8 @@ begin
   begin
     // Define o foco para o DBGrid
     selectParceiro;
-  end;
+  end else if key= VK_ESCAPE then
+    close;
 end;
 
 end.

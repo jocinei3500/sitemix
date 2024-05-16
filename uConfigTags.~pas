@@ -4,30 +4,20 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids;
+  Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, ZAbstractTable,
+  ZDataset, DB, ZAbstractRODataset, ZAbstractDataset;
 
 type
   TfrConfigTags = class(TForm)
-    GroupBox1: TGroupBox;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    edTag1: TEdit;
-    btnRead: TButton;
-    edTag2: TEdit;
-    edTag3: TEdit;
-    edTag4: TEdit;
-    edTag5: TEdit;
-    edtIPAddress: TEdit;
     GroupBox2: TGroupBox;
     LabeledEdit1: TLabeledEdit;
     LabeledEdit2: TLabeledEdit;
     SpeedButton1: TSpeedButton;
     GroupBox3: TGroupBox;
     DBGrid1: TDBGrid;
+    ZQuery1: TZQuery;
+    tConfig: TZTable;
+    DataSource1: TDataSource;
   private
     { Private declarations }
     procedure save;
@@ -38,7 +28,12 @@ type
 var
   frConfigTags: TfrConfigTags;
 
+
+
 implementation
+
+uses uData;
+
 
 {$R *.dfm}
 

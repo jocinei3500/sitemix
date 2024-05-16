@@ -12,6 +12,7 @@ object frPesagem: TfrPesagem
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
@@ -50,6 +51,7 @@ object frPesagem: TfrPesagem
         Top = 25
         Width = 121
         Height = 24
+        CharCase = ecUpperCase
         EditLabel.Width = 27
         EditLabel.Height = 13
         EditLabel.Caption = 'Placa'
@@ -60,12 +62,16 @@ object frPesagem: TfrPesagem
         Font.Style = []
         ParentFont = False
         TabOrder = 0
+        Text = 'MKA2I59'
+        OnExit = edPlacaExit
       end
       object edSequencia: TLabeledEdit
         Left = 152
         Top = 25
         Width = 81
         Height = 24
+        TabStop = False
+        DragMode = dmAutomatic
         EditLabel.Width = 51
         EditLabel.Height = 13
         EditLabel.Caption = 'Sequ'#234'ncia'
@@ -75,6 +81,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ReadOnly = True
         TabOrder = 1
       end
     end
@@ -135,12 +142,16 @@ object frPesagem: TfrPesagem
         Font.Style = []
         ParentFont = False
         TabOrder = 0
+        OnExit = edCodParceiroExit
+        OnKeyDown = edCodParceiroKeyDown
       end
       object edNomeParceiro: TLabeledEdit
         Left = 104
         Top = 41
         Width = 369
         Height = 24
+        TabStop = False
+        DragMode = dmAutomatic
         EditLabel.Width = 51
         EditLabel.Height = 16
         EditLabel.Caption = 'Parceiro'
@@ -150,6 +161,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ReadOnly = True
         TabOrder = 1
       end
       object edEndereco: TLabeledEdit
@@ -168,6 +180,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ReadOnly = True
         TabOrder = 2
       end
       object edMunicipio: TLabeledEdit
@@ -186,6 +199,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ReadOnly = True
         TabOrder = 3
       end
     end
@@ -240,21 +254,26 @@ object frPesagem: TfrPesagem
         Font.Style = []
         ParentFont = False
         TabOrder = 0
+        OnExit = edCodProdutoExit
+        OnKeyDown = edCodProdutoKeyDown
       end
       object edNomeProduto: TLabeledEdit
         Left = 104
         Top = 40
         Width = 369
         Height = 24
-        EditLabel.Width = 33
+        TabStop = False
+        DragMode = dmAutomatic
+        EditLabel.Width = 37
         EditLabel.Height = 13
-        EditLabel.Caption = 'C'#243'digo'
+        EditLabel.Caption = 'Produto'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ReadOnly = True
         TabOrder = 1
       end
     end
@@ -301,6 +320,35 @@ object frPesagem: TfrPesagem
         Height = 16
         Caption = 'Observa'#231#227'o'
       end
+      object SpeedButton3: TSpeedButton
+        Left = 64
+        Top = 40
+        Width = 23
+        Height = 24
+        Glyph.Data = {
+          9A020000424D9A020000000000009A0100002800000010000000100000000100
+          08000000000000010000232E0000232E00005900000000000000697EF2006A7F
+          F2006B7FF2006B80F2006C80F2006C81F2006D81F2006D82F2006E82F2006F83
+          F2006F84F2007084F2007185F2007286F2007286F3007386F2007386F3007387
+          F3007487F300778AF300788BF300798BF300798CF3007A8DF3007B8DF3007B8E
+          F3007C8EF3007D8FF4007E90F4008092F4008192F4008193F4008293F4008294
+          F4008394F4008495F4008596F4008697F4008899F400899AF4008B9BF4008D9D
+          F5008E9EF5008F9FF50090A0F50094A3F50094A3F60097A6F50097A6F60098A6
+          F50098A7F60099A7F60099A8F6009AA9F6009BA9F6009CAAF6009EACF6009FAC
+          F6009FADF600A1AEF600A2AFF600A3B0F700A4B1F700A5B1F700A5B2F700A6B2
+          F700A7B3F700A7B4F700A8B4F700A9B5F700AFBAF800B0BBF800B1BCF800B2BC
+          F800B3BDF800B3BEF800B4BFF800B7C1F800BAC3F800BBC5F900BDC7F900BEC7
+          F900C5CDFA00DADFFC00E1E5FC00F2F4FE00F5F6FE00FEFEFF00FFFFFF005858
+          585854411D08071D415458585858585857400100000000000001405758585857
+          2A000000000000000000032A575858410000000000000000004E530041585401
+          0000002645421B004D551C00015442000007525653535653551B000000421D00
+          004F54160000235545000000001D070005562E00000000455300000000070600
+          13571300000000295400000000071D0005572C000000004253000000001D4200
+          0050541300001D553000000000425401000A53565253564A0000000001545841
+          0000002B4B461C0000000000415858572A000000000000000000002A57585858
+          57400100000000000001405758585858585854411D08081D415458585858}
+        OnClick = SpeedButton2Click
+      end
       object edCodMotorista: TLabeledEdit
         Left = 16
         Top = 41
@@ -322,6 +370,8 @@ object frPesagem: TfrPesagem
         Top = 41
         Width = 377
         Height = 24
+        TabStop = False
+        DragMode = dmAutomatic
         EditLabel.Width = 55
         EditLabel.Height = 16
         EditLabel.Caption = 'Motorista'
@@ -331,6 +381,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+        ReadOnly = True
         TabOrder = 1
       end
       object edNotaFiscal: TLabeledEdit
@@ -695,11 +746,12 @@ object frPesagem: TfrPesagem
           4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F4F
           4F4F4F4F4F4F4F4F509D}
       end
-      object edPesoAtual: TLabeledEdit
+      object edPesoTara: TLabeledEdit
         Left = 16
         Top = 40
         Width = 137
         Height = 54
+        TabStop = False
         BiDiMode = bdRightToLeft
         DragMode = dmAutomatic
         EditLabel.Width = 29
@@ -714,6 +766,7 @@ object frPesagem: TfrPesagem
         Font.Style = [fsBold]
         ParentBiDiMode = False
         ParentFont = False
+        ReadOnly = True
         TabOrder = 0
       end
       object edPesoBruto: TLabeledEdit
@@ -721,6 +774,7 @@ object frPesagem: TfrPesagem
         Top = 40
         Width = 137
         Height = 54
+        TabStop = False
         BiDiMode = bdRightToLeft
         DragMode = dmAutomatic
         EditLabel.Width = 31
@@ -735,6 +789,7 @@ object frPesagem: TfrPesagem
         Font.Style = [fsBold]
         ParentBiDiMode = False
         ParentFont = False
+        ReadOnly = True
         TabOrder = 1
       end
       object edPesoLiquido: TLabeledEdit
@@ -742,6 +797,7 @@ object frPesagem: TfrPesagem
         Top = 40
         Width = 137
         Height = 54
+        TabStop = False
         BiDiMode = bdRightToLeft
         DragMode = dmAutomatic
         EditLabel.Width = 44
@@ -756,6 +812,7 @@ object frPesagem: TfrPesagem
         Font.Style = [fsBold]
         ParentBiDiMode = False
         ParentFont = False
+        ReadOnly = True
         TabOrder = 2
       end
     end

@@ -47,7 +47,7 @@ object frBuscaProduto: TfrBuscaProduto
     Top = 64
     Width = 377
     Height = 145
-    DataSource = dmData.dsX
+    DataSource = dmData.dsProdutro
     Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
@@ -55,6 +55,8 @@ object frBuscaProduto: TfrBuscaProduto
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
+    OnDblClick = dbgProdutosDblClick
+    OnKeyDown = dbgProdutosKeyDown
     Columns = <
       item
         Expanded = False

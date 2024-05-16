@@ -56,6 +56,7 @@ object frBuscaProduto: TfrBuscaProduto
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
     OnDblClick = dbgProdutosDblClick
+    OnKeyDown = dbgProdutosKeyDown
     Columns = <
       item
         Expanded = False

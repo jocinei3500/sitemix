@@ -46,7 +46,7 @@ end;
 procedure TfrGetPeso.FormShow(Sender: TObject);
 begin
   Comport1.Open;
-  edGetPeso.Text:=frPesagem.edPesoAtual.Text;
+  edGetPeso.Text:=frPesagem.edPesoTara.Text;
 end;
 
 procedure TfrGetPeso.ComPort1RxChar(Sender: TObject; Count: Integer);
@@ -68,7 +68,7 @@ end;
 
 procedure TfrGetPeso.SpeedButton1Click(Sender: TObject);
 begin
-  frPesagem.edPesoAtual.Text:=edGetPeso.Text;
+  frPesagem.edPesoTara.Text:=edGetPeso.Text;
   close;
 end;
 

@@ -1,8 +1,8 @@
 object frConfigTags: TfrConfigTags
   Left = 563
   Top = 181
-  Width = 583
-  Height = 418
+  Width = 615
+  Height = 347
   Caption = 'Configura'#231#245'es de TAGS'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,114 +11,9 @@ object frConfigTags: TfrConfigTags
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object GroupBox1: TGroupBox
-    Left = 303
-    Top = 109
-    Width = 249
-    Height = 252
-    Caption = ' Read test '
-    TabOrder = 0
-    object Label5: TLabel
-      Left = 24
-      Top = 64
-      Width = 28
-      Height = 13
-      Caption = 'TAG1'
-    end
-    object Label6: TLabel
-      Left = 24
-      Top = 96
-      Width = 28
-      Height = 13
-      Caption = 'TAG2'
-    end
-    object Label7: TLabel
-      Left = 24
-      Top = 128
-      Width = 28
-      Height = 13
-      Caption = 'TAG3'
-    end
-    object Label8: TLabel
-      Left = 24
-      Top = 160
-      Width = 28
-      Height = 13
-      Caption = 'TAG4'
-    end
-    object Label9: TLabel
-      Left = 24
-      Top = 192
-      Width = 28
-      Height = 13
-      Caption = 'TAG5'
-    end
-    object Label10: TLabel
-      Left = 32
-      Top = 20
-      Width = 10
-      Height = 13
-      Caption = 'IP'
-    end
-    object edTag1: TEdit
-      Left = 64
-      Top = 60
-      Width = 73
-      Height = 21
-      TabOrder = 0
-      Text = '4601'
-    end
-    object btnRead: TButton
-      Left = 16
-      Top = 216
-      Width = 217
-      Height = 25
-      Caption = '&Read register'
-      TabOrder = 1
-    end
-    object edTag2: TEdit
-      Left = 64
-      Top = 92
-      Width = 73
-      Height = 21
-      TabOrder = 2
-      Text = '4607'
-    end
-    object edTag3: TEdit
-      Left = 64
-      Top = 124
-      Width = 73
-      Height = 21
-      TabOrder = 3
-      Text = '4637'
-    end
-    object edTag4: TEdit
-      Left = 64
-      Top = 156
-      Width = 73
-      Height = 21
-      TabOrder = 4
-      Text = '4617'
-    end
-    object edTag5: TEdit
-      Left = 64
-      Top = 188
-      Width = 73
-      Height = 21
-      TabOrder = 5
-      Text = '4627'
-    end
-    object edtIPAddress: TEdit
-      Left = 64
-      Top = 16
-      Width = 137
-      Height = 21
-      TabOrder = 6
-      Text = '192.168.0.5'
-    end
-  end
   object GroupBox2: TGroupBox
     Left = 16
     Top = 8
@@ -130,7 +25,7 @@ object frConfigTags: TfrConfigTags
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     object SpeedButton1: TSpeedButton
       Left = 336
       Top = 32
@@ -204,8 +99,9 @@ object frConfigTags: TfrConfigTags
         E9E9E9E9D3737573737373737373737373737373737373737373737373737373
         737373737375}
       Spacing = 1
+      OnClick = SpeedButton1Click
     end
-    object LabeledEdit1: TLabeledEdit
+    object edNome: TLabeledEdit
       Left = 40
       Top = 40
       Width = 121
@@ -215,7 +111,7 @@ object frConfigTags: TfrConfigTags
       EditLabel.Caption = 'Nome'
       TabOrder = 0
     end
-    object LabeledEdit2: TLabeledEdit
+    object edValor: TLabeledEdit
       Left = 192
       Top = 40
       Width = 121
@@ -229,14 +125,15 @@ object frConfigTags: TfrConfigTags
   object GroupBox3: TGroupBox
     Left = 16
     Top = 104
-    Width = 265
-    Height = 257
-    TabOrder = 2
-    object DBGrid1: TDBGrid
+    Width = 537
+    Height = 185
+    TabOrder = 1
+    object dbgConfig: TDBGrid
       Left = 8
-      Top = 8
-      Width = 233
-      Height = 233
+      Top = 16
+      Width = 513
+      Height = 153
+      DataSource = dsConfig
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -244,5 +141,21 @@ object frConfigTags: TfrConfigTags
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
     end
+  end
+  object qConfig: TZQuery
+    Connection = dmData.zConnLocal
+    Params = <>
+    Left = 560
+    Top = 88
+  end
+  object tConfig: TZTable
+    Connection = dmData.zConnLocal
+    Left = 560
+    Top = 120
+  end
+  object dsConfig: TDataSource
+    DataSet = tConfig
+    Left = 560
+    Top = 56
   end
 end

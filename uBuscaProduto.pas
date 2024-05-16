@@ -16,6 +16,8 @@ type
     procedure edBuscaProdutoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure dbgProdutosDblClick(Sender: TObject);
+    procedure dbgProdutosKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     procedure buscaProdutos;
     procedure selectProduto;
@@ -69,17 +71,17 @@ begin
   begin
     // Define o foco para o DBGrid
     dbgProdutos.SetFocus;
-  end;
+  end else if key = VK_ESCAPE then
+    close;
 end;
 
 procedure TfrBuscaProduto.selectProduto;
 var
   id:integer;
 begin
-  id:=30;
   id := dbgProdutos.DataSource.DataSet.FieldByName('id').AsInteger;
   dmData.zQueryX.Close;
-  dmData.zQueryX.SQL.Text:='SELECT * FROM PARCEIROS WHERE id = :id';
+  dmData.zQueryX.SQL.Text:='SELECT * FROM PRODUTOS WHERE id = :id';
   dmData.zQueryX.ParamByName('id').AsInteger := id; // Define o valor do parâmetro ":id"
   dmData.zQueryX.Open;
   frPesagem.edCodProduto.Text:= IntToStr(dmData.zQueryX.FieldByName('id').AsInteger);
@@ -91,6 +93,19 @@ end;
 procedure TfrBuscaProduto.dbgProdutosDblClick(Sender: TObject);
 begin
   selectProduto;
+end;
+
+procedure TfrBuscaProduto.dbgProdutosKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+// Verifica se a tecla pressionada é a tecla Enter
+  if Key = VK_RETURN then
+    begin
+      // Define o foco para o DBGrid
+      selectProduto;
+    end
+  else if key=VK_ESCAPE then
+    close
 end;
 
 end.

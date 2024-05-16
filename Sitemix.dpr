@@ -12,7 +12,8 @@ uses
   uBuscaProduto in 'uBuscaProduto.pas' {frBuscaProduto},
   uGetPeso in 'uGetPeso.pas' {frGetPeso},
   uData in 'uData.pas' {dmData: TDataModule},
-  uConfigTags in 'uConfigTags.pas' {frConfigTags};
+  uConfigTags in 'uConfigTags.pas' {frConfigTags},
+  ufrBritagem2 in 'ufrBritagem2.pas' {frBritagem2};
 
 {$R *.res}
 
@@ -28,5 +29,6 @@ begin
   Application.CreateForm(TfrGetPeso, frGetPeso);
   Application.CreateForm(TdmData, dmData);
   Application.CreateForm(TfrConfigTags, frConfigTags);
+  Application.CreateForm(TfrBritagem2, frBritagem2);
   Application.Run;
 end.

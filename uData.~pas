@@ -17,6 +17,7 @@ type
     qBUsca: TZQuery;
     dsProdutro: TDataSource;
     qProduto: TZQuery;
+    zConnRemote: TZConnection;
     procedure DataModuleCreate(Sender: TObject);
   private
     function databaseConnect:boolean;
@@ -47,6 +48,27 @@ begin
   zConnLocal.Password:='';
   try
     zConnLocal.Connected:=true;
+  except
+    showmessage('Não foi possï¿½vel conectar ao banco de dados!');
+    result:=false;
+  end;
+
+
+  zConnRemote.Protocol:='mariadb';
+  path:=extractFilePath(application.ExeName)+'data\libmaria\libmariadb.dll';
+  zConnRemote.LibraryLocation:=path;
+  zConnRemote.Port:=3306;
+  zConneRemote.HostName:='154.56.48.204';
+  zConneRemote.Database:='u528171766_dbmaxis';
+  zConneRemote.Catalog:='u528171766_dbmaxis';
+  zConneRemote.User:='u528171766_jocinei';
+  zConneRemote.Password:='By9$strings';
+
+
+
+
+  try
+    zConnRemote.Connected:=true;
   except
     showmessage('Não foi possível conectar ao banco de dados!');
     result:=false;
