@@ -99,7 +99,9 @@ begin
   frPesagem.edNomeParceiro.Text:= dmData.qParceiro.FieldByName('nome').AsString;
   frPesagem.edEndereco.Text:= dmData.qParceiro.FieldByName('endereco').AsString;
   frPesagem.edMunicipio.Text:= dmData.qParceiro.FieldByName('municipio').AsString;
+  frPesagem.edCodProduto.SetFocus;
   close;
+
 
 end;
 

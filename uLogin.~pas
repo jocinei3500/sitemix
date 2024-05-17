@@ -1,0 +1,27 @@
+unit uLogin;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Mask, StdCtrls, Buttons, ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    LabeledEdit1: TLabeledEdit;
+    BitBtn1: TBitBtn;
+    MaskEdit1: TMaskEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -12,32 +12,40 @@ type
     GroupBox2: TGroupBox;
     edNome: TLabeledEdit;
     edValor: TLabeledEdit;
-    SpeedButton1: TSpeedButton;
     GroupBox3: TGroupBox;
     dbgConfig: TDBGrid;
     qConfig: TZQuery;
     tConfig: TZTable;
     dsConfig: TDataSource;
+    btCadastrar: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure dbgConfigDblClick(Sender: TObject);
+    procedure btCadastrarClick(Sender: TObject);
   private
     { Private declarations }
     procedure save;
+    procedure selectConfig;
+    procedure alterar;
+    procedure limpar;
   public
     { Public declarations }
   end;
 
 var
   frConfigTags: TfrConfigTags;
+  gId:integer;
 
 
 
 implementation
 
-uses uData;
+uses uData, ufrPesagem;
 
 
 {$R *.dfm}
+
+
 
 procedure TfrConfigTags.save;
 var
@@ -56,7 +64,10 @@ begin
     qConfig.ExecSQL;
     qConfig.Close;
     if qConfig.RowsAffected >0 then
-      tConfig.Refresh;
+      begin
+        tConfig.Refresh;
+        limpar;
+      end;
 
 end;
 
@@ -69,6 +80,55 @@ end;
 procedure TfrConfigTags.SpeedButton1Click(Sender: TObject);
 begin
   save
+end;
+
+procedure TfrConfigTags.selectConfig;
+  var
+    id:integer;
+begin
+  id := dbgConfig.DataSource.DataSet.FieldByName('id').AsInteger;
+  qConfig.Close;
+  qConfig.SQL.Text:='SELECT * FROM CONFIG_TAGS WHERE id = :id';
+  qConfig.ParamByName('id').AsInteger := id; // Define o valor do parâmetro ":id"
+  qConfig.Open;
+  gId:=qConfig.fieldByName('id').AsInteger;
+  edNome.Text:= qConfig.FieldByName('nome').AsString;
+  edValor.Text:= qConfig.FieldByName('valor').AsString;
+  btCadastrar.Caption:='Salvar';
+  edNome.SetFocus;
+end;
+
+procedure TfrConfigTags.dbgConfigDblClick(Sender: TObject);
+begin
+  selectConfig;
+end;
+
+procedure TfrConfigTags.alterar;
+begin
+  qConfig.Close;
+  qConfig.SQL.Text:='UPDATE CONFIG_TAGS SET NOME = :nome, VALOR=:valor WHERE ID = :id ';
+  qConfig.ParamByName('id').AsInteger := gId; // Define o valor do parâmetro ":id"
+  qConfig.ParamByName('nome').AsString := edNome.Text;
+  qConfig.ParamByName('valor').AsString := edValor.Text;
+  qConfig.ExecSql;
+  tConfig.Refresh;
+  limpar;
+  btCadastrar.Caption:='Cadastrar';
+
+end;
+
+procedure TfrConfigTags.btCadastrarClick(Sender: TObject);
+begin
+  if btCadastrar.Caption='Cadastrar'then
+    save
+  else
+    alterar;
+end;
+
+procedure TfrConfigTags.limpar;
+begin
+  edNome.Clear;
+  edValor.Clear;
 end;
 
 end.

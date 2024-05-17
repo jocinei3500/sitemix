@@ -78,6 +78,7 @@ type
     Produto1: TMenuItem;
     Parceiro1: TMenuItem;
     mctPLC: TIdModBusClient;
+    Britagem21: TMenuItem;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Britagem1Click(Sender: TObject);
@@ -85,6 +86,7 @@ type
     procedure MenuItem1Click(Sender: TObject);
     procedure Produto1Click(Sender: TObject);
     procedure Parceiro1Click(Sender: TObject);
+    procedure Britagem21Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -96,7 +98,8 @@ var
 
 implementation
 
-uses uBritagem, ufrPesagem, uConfigTags, uCadProduto, uCadParceiro;
+uses uBritagem, ufrPesagem, uConfigTags, uCadProduto, uCadParceiro,
+  ufrBritagem2;
 
 {$R *.dfm}
 
@@ -140,6 +143,11 @@ end;
 procedure TfrMain.Parceiro1Click(Sender: TObject);
 begin
 frCadParceiro.showModal;
+end;
+
+procedure TfrMain.Britagem21Click(Sender: TObject);
+begin
+frBritagem2.showModal;
 end;
 
 end.

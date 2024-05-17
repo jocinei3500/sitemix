@@ -3,7 +3,7 @@ unit ConnectionThreadUnit;
 interface
 
 uses
-  Classes, IdModBusClient;
+  Classes, IdModBusClient, SysUtils;
 
 type
   TConnectionThread = class(TThread)
@@ -22,14 +22,13 @@ implementation
 
 constructor TConnectionThread.Create(const IpAddress: string);
 begin
-  inherited Create(True);
+  inherited Create(True); // Cria a thread suspensa
   FIpAddress := IpAddress;
   FreeOnTerminate := True;
 end;
 
 procedure TConnectionThread.Execute;
 begin
-  inherited;
   FModbusClient := TIdModBusClient.Create(nil);
   try
     FModbusClient.Host := FIpAddress;
@@ -45,3 +44,4 @@ begin
 end;
 
 end.
+

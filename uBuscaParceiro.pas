@@ -89,7 +89,6 @@ procedure TfrBuscaParceiro.selectParceiro;
 var
   id:integer;
 begin
-  id:=30;
   id := dbgParceiros.DataSource.DataSet.FieldByName('id').AsInteger;
   dmData.qParceiro.Close;
   dmData.qParceiro.SQL.Text:='SELECT * FROM PARCEIROS WHERE id = :id';

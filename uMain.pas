@@ -99,7 +99,7 @@ var
 implementation
 
 uses uBritagem, ufrPesagem, uConfigTags, uCadProduto, uCadParceiro,
-  ufrBritagem2;
+  ufrBritagem2, uLogin;
 
 {$R *.dfm}
 
@@ -127,7 +127,7 @@ end;
 
 procedure TfrMain.MenuItem4Click(Sender: TObject);
 begin
-  frConfigTags.showModal;
+  frLogin.showModal;
 end;
 
 procedure TfrMain.MenuItem1Click(Sender: TObject);

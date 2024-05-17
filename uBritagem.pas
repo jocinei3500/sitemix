@@ -7,7 +7,8 @@ uses
   Dialogs, ZAbstractConnection, ZConnection, ZAbstractTable, ZDataset, DB,
   ZAbstractRODataset, ZAbstractDataset, ExtCtrls, IdBaseComponent,
   IdComponent, IdTCPConnection, IdTCPClient, IdModBusClient, Grids,
-  DBGrids, StdCtrls, pngimage, connectionThreadUnit, jpeg;
+  DBGrids, StdCtrls, pngimage, connectionThreadUnit, jpeg, IdIcmpClient, IdException, IdGlobal,
+  Buttons;
 
 type
   TfrBritagem = class(TForm)
@@ -60,23 +61,23 @@ type
     Edit4: TEdit;
     Edit9: TEdit;
     Edit1: TEdit;
-    Edit2: TEdit;
+    edProdPedrisco: TEdit;
     Edit5: TEdit;
     Edit6: TEdit;
     Edit7: TEdit;
-    Edit8: TEdit;
+    edProdPedra2: TEdit;
     Edit10: TEdit;
     Edit11: TEdit;
     Edit12: TEdit;
-    Edit13: TEdit;
+    edPodRachao: TEdit;
     Edit14: TEdit;
     Edit15: TEdit;
     Edit16: TEdit;
-    Edit17: TEdit;
+    edProdPedra34: TEdit;
     Edit18: TEdit;
     Edit19: TEdit;
     Edit20: TEdit;
-    Edit21: TEdit;
+    edProdBicaCorrida: TEdit;
     Edit22: TEdit;
     Edit23: TEdit;
     Shape21: TShape;
@@ -94,15 +95,19 @@ type
     Edit26: TEdit;
     Edit27: TEdit;
     zConnectRemote: TZConnection;
+    BitBtn1: TBitBtn;
     Button1: TButton;
+    Edit2: TEdit;
     procedure FormShow(Sender: TObject);
     procedure timer1Timer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BitBtn1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
   private
     procedure saveTagsToBase;
     function DatabaseConnect:boolean;
     procedure buscaConfig;
+    function readCoil(memory:integer):integer;
     { Private declarations }
   public
     { Public declarations }
@@ -113,12 +118,38 @@ var
   po, pedrisco, pedra34, pedra2, energia_usina,energia_britagem:integer;
   modBusHost:string;
   intervalo_clp_britagem:integer;
-
+  tDigitalPLC:array[1..13] of integer;//entradas digitais das transportadores
+  bDigitalPLC:array[1..4] of integer; //britadores
+  pDigitalPLC:array[1..3]of integer;//peneiras
+  tCoil:array[1..13] of integer;
+  bCoil:array[1..4] of integer;
+  pCoil:array[1..3]of integer;
 implementation
 
 uses uData;
 
 {$R *.dfm}
+
+function Ping(const Host: string): Boolean;
+var
+  ICMPClient: TIdIcmpClient;
+begin
+  Result := False;
+  ICMPClient := TIdIcmpClient.Create(nil);
+  try
+    try
+      ICMPClient.Host := Host;
+      ICMPClient.Ping;
+      Result := ICMPClient.ReplyStatus.ReplyStatusType = rsEcho;
+    except
+      on E: Exception do
+        // Tratar exceções, se necessário
+    end;
+  finally
+    ICMPClient.Free;
+  end;
+end;
+
 
 
 
@@ -127,6 +158,7 @@ procedure TfrBritagem.saveTagsToBase;
     Data: array[0..4096] of Word;
     dPo, dPedrisco,dpedra34, dPedra2, dEnergiaUsina,dEnergiaBritagem:string;
     date, hora:string;
+    i:integer;//usado para loço for
 begin
     if mctPLC.ReadHoldingRegisters(po,1, Data)then
     begin
@@ -138,6 +170,17 @@ begin
       dEnergiaBritagem:=IntToStr(Data[0]);
       edEnergiaBritagem.Text:=denergiaBritagem;
     end;
+
+     if mctPLC.ReadHoldingRegisters(pedrisco,10, Data)then
+    begin
+      dPedrisco:=IntToStr(Data[0]);
+      edProdPedrisco.Text:=dPedrisco;
+    end;
+    //laço for leê as entradas digitais M.
+    for i:=1 to 13 do
+      begin
+        tCoil[i]:=readCoil(tDigitalPLC[i]);
+      end;
 
     qProd.close;
     qProd.SQL.Text:='';
@@ -158,16 +201,25 @@ end;
 
 procedure TfrBritagem.FormShow(Sender: TObject);
 begin
-frBritagem.Top:=98;
-frBritagem.left:=-5;
-frBritagem.Width:=1610;
-frBritagem.Height:=767;
+  frBritagem.Top:=98;
+  frBritagem.left:=-5;
+  frBritagem.Width:=1610;
+  frBritagem.Height:=767;
 
 
 buscaConfig;
-if databaseConnect=false then
-  exit;
-timer1.Enabled:=true;
+if not Ping(ModBusHost) then
+  begin
+    showmessage('Não foi possível criar uma conexão com o IP '+modBusHost +
+    #13 +'1. Verifique a conexão com sua rede.'+#13+
+    '2. verifique se o endereço de IP está correto.'+#13+#13+
+    'Tela será aberta mas sem conexão.');
+    exit;
+  end;
+  if databaseConnect=false then
+    exit;
+  timer1.Enabled:=true;
+
 
 end;
 
@@ -175,7 +227,7 @@ end;
 
 procedure TfrBritagem.timer1Timer(Sender: TObject);
 begin
-saveTagsToBase;
+  //saveTagsToBase;
 end;
 
 procedure TfrBritagem.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -223,6 +275,8 @@ end;
 
 
 procedure TfrBritagem.buscaConfig;
+var
+  i:integer;
 begin
   dmData.zQueryX.Close;
   dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';
@@ -272,13 +326,87 @@ begin
   dmData.zQueryX.Open;
   intervalo_clp_britagem:= dmData.zQueryX.FieldByName('valor').AsInteger;
   dmData.zQueryX.Close;
+  i:=1;
+  for i:=1 to 13 do
+    begin
+      dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';
+      dmData.zQueryX.ParamByName('nome').AsString :='t'+ IntToStr(i);
+      dmData.zQueryX.Open;
+      tDigitalPlc[i]:= dmData.zQueryX.FieldByName('valor').AsInteger;
+      dmData.zQueryX.Close;
+    end;
+end;
+
+
+function TfrBritagem.readCoil(memory: integer): integer;
+  var
+    Coils: array of Boolean;
+    StartAddress: Word;
+    Quantity: Word;
+begin
+  StartAddress := memory; // Endereço inicial do coil
+  Quantity := 1; // Quantidade de coils a serem lidos (pode ser mais de um)
+
+  // Ajustar o tamanho do array de coils
+  SetLength(Coils, Quantity);
+
+  try
+    // Conectando ao CLP
+    mctPLC.Connect;
+    try
+      // Lendo os coils
+      mctPLC.ReadCoils(StartAddress, Quantity, Coils);
+
+      // Verificando o status do coil
+      if Coils[0] then
+        result:=1
+      else
+        result:=0;
+    finally
+      mctPLC.Disconnect;
+    end;
+  except
+    on E: Exception do
+      ShowMessage('Error reading coil: ' + E.Message);
+  end;
+end;
+
+procedure TfrBritagem.BitBtn1Click(Sender: TObject);
+begin
+saveTagsToBase;
 end;
 
 procedure TfrBritagem.Button1Click(Sender: TObject);
+var
+  Coils: array of Boolean;
+  StartAddress: Word;
+  Quantity: Word;
 begin
-  if databaseConnect=false then
-  exit;
-  saveTagsToBase;
+  StartAddress := strToInt(edit2.Text)+2049; // Endereço inicial do coil
+  Quantity := 4; // Quantidade de coils a serem lidos (pode ser mais de um)
+
+  // Ajustar o tamanho do array de coils
+  SetLength(Coils, Quantity);
+
+  try
+    // Conectando ao CLP
+    mctPLC.Connect;
+    try
+      // Lendo os coils
+      mctPLC.ReadCoils(StartAddress, Quantity, Coils);
+
+      // Verificando o status do coil
+      if Coils[0] then
+        ShowMessage('Coil at address 2182 is ON')
+      else
+        ShowMessage('Coil at address 2182 is OFF');
+    finally
+      mctPLC.Disconnect;
+    end;
+  except
+    on E: Exception do
+      ShowMessage('Error reading coil: ' + E.Message);
+  end;
 end;
 
 end.

@@ -5628,6 +5628,10 @@ object frMain: TfrMain
       Caption = 'Britagem'
       OnClick = Britagem1Click
     end
+    object Britagem21: TMenuItem
+      Caption = 'Britagem2'
+      OnClick = Britagem21Click
+    end
   end
   object ppRelatorio: TPopupMenu
     Left = 720
