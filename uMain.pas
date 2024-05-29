@@ -17,17 +17,13 @@ type
     ToolButton7: TToolButton;
     ToolButton2: TToolButton;
     ToolButton8: TToolButton;
-    ToolButton3: TToolButton;
     ToolButton9: TToolButton;
     ToolButton4: TToolButton;
     ToolButton10: TToolButton;
-    ToolButton5: TToolButton;
     ToolButton11: TToolButton;
     ToolButton6: TToolButton;
     ToolButton12: TToolButton;
     ToolButton1: TToolButton;
-    Panel2: TPanel;
-    lbRelogio: TLabel;
     ppCadastro: TPopupMenu;
     OrdemdeServio1: TMenuItem;
     Compras1: TMenuItem;
@@ -55,15 +51,10 @@ type
     ConsultaPersonalise1: TMenuItem;
     Empresas3: TMenuItem;
     ServiosRealizados2: TMenuItem;
-    Timer1: TTimer;
     ppAjuda: TPopupMenu;
     SobreoSistema1: TMenuItem;
     utorialdoSistema1: TMenuItem;
     ConhecendooSistema1: TMenuItem;
-    ppCaixa: TPopupMenu;
-    Empresa1: TMenuItem;
-    Pessoal1: TMenuItem;
-    Bancos1: TMenuItem;
     ImageList1: TImageList;
     ImageList2: TImageList;
     ToolButton13: TToolButton;
@@ -77,8 +68,9 @@ type
     MenuItem6: TMenuItem;
     Produto1: TMenuItem;
     Parceiro1: TMenuItem;
-    mctPLC: TIdModBusClient;
-    Britagem21: TMenuItem;
+    ToolButton14: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton5: TToolButton;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Britagem1Click(Sender: TObject);
@@ -86,7 +78,7 @@ type
     procedure MenuItem1Click(Sender: TObject);
     procedure Produto1Click(Sender: TObject);
     procedure Parceiro1Click(Sender: TObject);
-    procedure Britagem21Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
@@ -99,7 +91,7 @@ var
 implementation
 
 uses uBritagem, ufrPesagem, uConfigTags, uCadProduto, uCadParceiro,
-  ufrBritagem2, uLogin;
+  ufrBritagem2, uLogin, uData;
 
 {$R *.dfm}
 
@@ -114,20 +106,23 @@ else if (ssCtrl in Shift) and (chr(Key) in ['R', 'r']) then
   ppRelatorio.Popup(185,130)
 else if (ssCtrl in Shift) and (chr(Key) in ['S', 's']) then
   ppConsulta.Popup(280,130)
-else if (ssCtrl in Shift) and (chr(Key) in ['X', 'x']) then
-  ppCaixa.Popup(375,130)
 else if (ssCtrl in Shift) and (chr(Key) in ['J', 'j']) then
   ppAjuda.Popup(470,130)
 end;
 
 procedure TfrMain.Britagem1Click(Sender: TObject);
 begin
-  frBritagem.showModal;
+  if (frBritagem = Nil) then
+    Application.CreateForm(TfrBritagem,frBritagem);
+    frBritagem.Show;
 end;
 
 procedure TfrMain.MenuItem4Click(Sender: TObject);
 begin
-  frLogin.showModal;
+
+    if (frLogin= Nil) then
+    Application.CreateForm(TfrLogin,frLogin);
+    frLogin.ShowModal;
 end;
 
 procedure TfrMain.MenuItem1Click(Sender: TObject);
@@ -145,9 +140,15 @@ begin
 frCadParceiro.showModal;
 end;
 
-procedure TfrMain.Britagem21Click(Sender: TObject);
+procedure TfrMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-frBritagem2.showModal;
+  canclose:=false;
+  if messagebox(handle,'Deseja mesmo finalizar o sistema?','Finalizar',mb_Iconquestion+mb_YESNO)=idYes then
+    begin
+      application.Terminate;
+    end
+  else
+    exit;
 end;
 
 end.

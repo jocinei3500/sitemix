@@ -18,25 +18,37 @@ type
     dsProdutro: TDataSource;
     qProduto: TZQuery;
     zConnRemote: TZConnection;
+    tProducao: TZTable;
+    DataSource1: TDataSource;
+    qProducao: TZQuery;
+    qCadProdRemote: TZQuery;
+    qCadProdLocal: TZQuery;
     procedure DataModuleCreate(Sender: TObject);
+    procedure zConnLocalLost(Sender: TObject);
+    procedure zConnRemoteLost(Sender: TObject);
   private
-    function databaseConnect:boolean;
     { Private declarations }
   public
+  function LocalDatabaseConnect:boolean;
+    function RemotedataBaseConnect: Boolean;
     { Public declarations }
   end;
 
 var
   dmData: TdmData;
 
+
 implementation
+
+uses uBritagem;
 
 {$R *.dfm}
 
-function TdmData.DatabaseConnect: boolean;
+function TdmData.LocalDatabaseConnect: boolean;
  var
     path:string;
 begin
+  result:=false;
   zConnLocal.Protocol:='mariadb';
   path:=extractFilePath(application.ExeName)+'data\libmaria\libmariadb.dll';
   zConnLocal.LibraryLocation:=path;
@@ -48,36 +60,53 @@ begin
   zConnLocal.Password:='';
   try
     zConnLocal.Connected:=true;
-  except
-    showmessage('Não foi possï¿½vel conectar ao banco de dados!');
-    result:=false;
-  end;
-
-
-  zConnRemote.Protocol:='mariadb';
-  path:=extractFilePath(application.ExeName)+'data\libmaria\libmariadb.dll';
-  zConnRemote.LibraryLocation:=path;
-  zConnRemote.Port:=3306;
-  zConneRemote.HostName:='154.56.48.204';
-  zConneRemote.Database:='u528171766_dbmaxis';
-  zConneRemote.Catalog:='u528171766_dbmaxis';
-  zConneRemote.User:='u528171766_jocinei';
-  zConneRemote.Password:='By9$strings';
-
-
-
-
-  try
-    zConnRemote.Connected:=true;
+    result:=true;
   except
     showmessage('Não foi possível conectar ao banco de dados!');
     result:=false;
   end;
 end;
 
+function TDmData.RemoteDataBaseConnect:Boolean;
+var
+  LPath:String;
+begin
+  result:=false;
+  zConnRemote.Protocol:='mariadb';
+  LPath:=extractFilePath(application.ExeName)+'data\libmaria\libmariadb.dll';
+  zConnRemote.LibraryLocation:=LPath;
+  zConnRemote.Port:=3306;
+  zConnRemote.HostName:='154.56.48.204';
+  zConnRemote.Database:='u528171766_dbmaxis';
+  zConnRemote.Catalog:='u528171766_dbmaxis';
+  zConnRemote.User:='u528171766_jocinei';
+  zConnRemote.Password:='By9$strings';
+  try
+    zConnRemote.Connected:=true;
+    tProducao.TableName:='producao_britagem';
+    tProducao.Active:=true;
+    result:=true;
+  except
+    showmessage('Não foi possível conectar ao banco de dados!');
+    result:=false;
+  end;
+end;
 procedure TdmData.DataModuleCreate(Sender: TObject);
 begin
-  databaseConnect;
+  LocalDatabaseConnect;
+end;
+
+procedure TdmData.zConnLocalLost(Sender: TObject);
+begin
+  frBritagem.tReadPlc.Enabled:=false;
+  showMessage('O banco de Dados perdeu a conexão');
+end;
+
+procedure TdmData.zConnRemoteLost(Sender: TObject);
+begin
+  frBritagem.tReadPlc.Enabled:=false;
+  zConnRemote.Disconnect;
+  showMessage('O banco de Dados perdeu a conexão');
 end;
 
 end.

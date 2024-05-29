@@ -62,6 +62,7 @@ begin
     qConfig.ParamByName('nome').AsString:=nome;
     qConfig.ParamByName('valor').AsString:=valor;
     qConfig.ExecSQL;
+    dmData.zConnLocal.Commit;
     qConfig.Close;
     if qConfig.RowsAffected >0 then
       begin
@@ -111,6 +112,8 @@ begin
   qConfig.ParamByName('nome').AsString := edNome.Text;
   qConfig.ParamByName('valor').AsString := edValor.Text;
   qConfig.ExecSql;
+  dmData.zConnLocal.Commit;
+
   tConfig.Refresh;
   limpar;
   btCadastrar.Caption:='Cadastrar';
@@ -128,7 +131,8 @@ end;
 procedure TfrConfigTags.limpar;
 begin
   edNome.Clear;
-  edNome.Clear;
+  edValor.Clear;
+  edNome.SetFocus;
 end;
 
 end.

@@ -38,7 +38,9 @@ procedure TfrLogin.BitBtn2Click(Sender: TObject);
 begin
   if (edUser.Text='jocinei') and (edPassword.Text='123') then
     begin
-      frConfigTags.showModal;
+      if (frConfigTags = Nil) then
+      Application.CreateForm(TfrConfigTags,frConfigTags);
+      frConfigTags.Show;
       close;
     end
   else
@@ -47,8 +49,8 @@ end;
 
 procedure TfrLogin.FormShow(Sender: TObject);
 begin
-  edUser.Clear;
-  edPassword.Clear;
+  //edUser.Clear;
+  //edPassword.Clear;
   edUser.SetFocus;
 end;
 

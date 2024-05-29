@@ -1,6 +1,6 @@
 object frLogin: TfrLogin
-  Left = 596
-  Top = 296
+  Left = 615
+  Top = 300
   Width = 451
   Height = 225
   Caption = 'Autentica'#231#227'o de Configura'#231#245'es'
@@ -47,6 +47,7 @@ object frLogin: TfrLogin
       Width = 121
       Height = 28
       TabOrder = 0
+      Text = 'jocinei'
     end
     object edPassword: TEdit
       Left = 152
@@ -61,6 +62,7 @@ object frLogin: TfrLogin
       ParentFont = False
       PasswordChar = 'l'
       TabOrder = 1
+      Text = '123'
     end
   end
   object BitBtn1: TBitBtn

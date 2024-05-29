@@ -1,21 +1,23 @@
 object dmData: TdmData
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Left = 348
-  Top = 179
+  Left = 362
+  Top = 188
   Height = 423
-  Width = 582
+  Width = 872
   object zConnLocal: TZConnection
     ControlsCodePage = cGET_ACP
+    AutoCommit = False
+    OnLost = zConnLocalLost
     DisableSavepoints = False
     Port = 0
-    Left = 16
+    Left = 24
     Top = 16
   end
   object qParceiro: TZQuery
     Connection = zConnLocal
     Params = <>
-    Left = 16
+    Left = 24
     Top = 72
   end
   object tParceiro: TZTable
@@ -58,9 +60,39 @@ object dmData: TdmData
   end
   object zConnRemote: TZConnection
     ControlsCodePage = cGET_ACP
+    AutoCommit = False
+    OnLost = zConnRemoteLost
     DisableSavepoints = False
     Port = 0
-    Left = 328
-    Top = 16
+    Left = 568
+    Top = 8
+  end
+  object tProducao: TZTable
+    Connection = zConnLocal
+    Left = 216
+    Top = 72
+  end
+  object DataSource1: TDataSource
+    DataSet = tProducao
+    Left = 216
+    Top = 128
+  end
+  object qProducao: TZQuery
+    Connection = zConnLocal
+    Params = <>
+    Left = 288
+    Top = 72
+  end
+  object qCadProdRemote: TZQuery
+    Connection = zConnRemote
+    Params = <>
+    Left = 568
+    Top = 64
+  end
+  object qCadProdLocal: TZQuery
+    Connection = zConnLocal
+    Params = <>
+    Left = 24
+    Top = 200
   end
 end

@@ -13,8 +13,8 @@ uses
   uGetPeso in 'uGetPeso.pas' {frGetPeso},
   uData in 'uData.pas' {dmData: TDataModule},
   uConfigTags in 'uConfigTags.pas' {frConfigTags},
-  ufrBritagem2 in 'ufrBritagem2.pas' {frBritagem2},
-  uLogin in 'uLogin.pas' {Form1};
+  uLogin in 'uLogin.pas' {frLogin},
+  uProducaoBritagem in 'uProducaoBritagem.pas' {frProducaoBritagem};
 
 {$R *.res}
 
@@ -30,7 +30,7 @@ begin
   Application.CreateForm(TfrGetPeso, frGetPeso);
   Application.CreateForm(TdmData, dmData);
   Application.CreateForm(TfrConfigTags, frConfigTags);
-  Application.CreateForm(TfrBritagem2, frBritagem2);
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfrLogin, frLogin);
+  Application.CreateForm(TfrProducaoBritagem, frProducaoBritagem);
   Application.Run;
 end.

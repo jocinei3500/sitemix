@@ -1,8 +1,8 @@
 object frPesagem: TfrPesagem
-  Left = 255
-  Top = 134
+  Left = 230
+  Top = 164
   Width = 1063
-  Height = 551
+  Height = 562
   Caption = 'Pesagem'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,7 +10,66 @@ object frPesagem: TfrPesagem
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIChild
+  Icon.Data = {
+    0000010001001818000000000000C80600001600000028000000180000003000
+    00000100080000000000A0020000000000000000000000000000000000000000
+    0000330000006600000099000000CC000000FF00000000330000333300006633
+    000099330000CC330000FF33000000660000336600006666000099660000CC66
+    0000FF66000000990000339900006699000099990000CC990000FF99000000CC
+    000033CC000066CC000099CC0000CCCC0000FFCC000000FF000033FF000066FF
+    000099FF0000CCFF0000FFFF000000003300330033006600330099003300CC00
+    3300FF00330000333300333333006633330099333300CC333300FF3333000066
+    3300336633006666330099663300CC663300FF66330000993300339933006699
+    330099993300CC993300FF99330000CC330033CC330066CC330099CC3300CCCC
+    3300FFCC330000FF330033FF330066FF330099FF3300CCFF3300FFFF33000000
+    6600330066006600660099006600CC006600FF00660000336600333366006633
+    660099336600CC336600FF33660000666600336666006666660099666600CC66
+    6600FF66660000996600339966006699660099996600CC996600FF99660000CC
+    660033CC660066CC660099CC6600CCCC6600FFCC660000FF660033FF660066FF
+    660099FF6600CCFF6600FFFF660000009900330099006600990099009900CC00
+    9900FF00990000339900333399006633990099339900CC339900FF3399000066
+    9900336699006666990099669900CC669900FF66990000999900339999006699
+    990099999900CC999900FF99990000CC990033CC990066CC990099CC9900CCCC
+    9900FFCC990000FF990033FF990066FF990099FF9900CCFF9900FFFF99000000
+    CC003300CC006600CC009900CC00CC00CC00FF00CC000033CC003333CC006633
+    CC009933CC00CC33CC00FF33CC000066CC003366CC006666CC009966CC00CC66
+    CC00FF66CC000099CC003399CC006699CC009999CC00CC99CC00FF99CC0000CC
+    CC0033CCCC0066CCCC0099CCCC00CCCCCC00FFCCCC0000FFCC0033FFCC0066FF
+    CC0099FFCC00CCFFCC00FFFFCC000000FF003300FF006600FF009900FF00CC00
+    FF00FF00FF000033FF003333FF006633FF009933FF00CC33FF00FF33FF000066
+    FF003366FF006666FF009966FF00CC66FF00FF66FF000099FF003399FF006699
+    FF009999FF00CC99FF00FF99FF0000CCFF0033CCFF0066CCFF0099CCFF00CCCC
+    FF00FFCCFF0000FFFF0033FFFF0066FFFF0099FFFF00CCFFFF00FFFFFF000000
+    00000D0D0D001A1A1A00282828003535350043434300505050005D5D5D006B6B
+    6B00787878008686860093939300A1A1A100AEAEAE00BBBBBB00C9C9C900D6D6
+    D600E4E4E400F1F1F100FFFFFF00000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000004117
+    411D1D1D1D1D1D1D1D1D1D1D1D414117171717171D411D174117171717171717
+    171717171717411D17171717171D411741171717171717163A5E5E3A10171741
+    17171717174165174117171717173AADEAE9E8EAAD3A16174117171717658917
+    41171717173AB3EAEAE9E9EAEAD75E171D171717178FB3174117171716ADEAEA
+    EAEAEAEAEAEAB33A1741171717B3D71D411717175EEAEAEAEAEAEAE6EAEAEA89
+    1741171741D7D7654117171689EAEAEAEAEAE4E7EAEAEAAD1641171765D7D789
+    171D1716ADEAEAEAEAE7E3EAEAEAEAAD1641171789D7D7B31741171689EAEAEA
+    EAEAEAEAEAEAEAAD16171717B3D7D7D7174117175EEAEAEAEAEAEAEAEAEAEA89
+    17171717D7D7D7D7411D1D1716ADEAEAEAEAEAEAEAEAB33A17171741D7D7D7D7
+    65174117173AB3EAEAE9E9EAEAD75E1717171765D7D7D7D789171D1D17173AAD
+    EAE9E8EAAD3A1617171D1789D7D7D7D7B3171741171717163A5E5E3A10171717
+    174117B3D7D7D7D7D7171717411717171717171717171717174117D7D7D7D7D7
+    D741171717411D171717171717171717174141D7D7D7D7D7D789411D1D174165
+    4141414141413B41414189D7D7D7D7D7D7D7D7D7D7E4D7D7D7D7D7D7D7EAE4D7
+    D7D7D7D7D7D7D7D7D7D7D7D7D7E4D7D7D7D7D7D7D7EAE4D7D7D7D7D7D7D7D7D7
+    D7D7E8E6E6E2E5E6E6E6E6E6E6E5E2E6E6E8D7D7D7D7D7D789655E5E5D5D5D5D
+    5D5D5D5D5D5D5D5D5E5E6589D7D7D76517171717171717171717171717171717
+    1717171765D7D7411717171D1D1D1D1D1D1D1D1D171717171717171717D70000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    000000000000000000000000000000000000000000000000000000000000}
   OldCreateOrder = False
+  Position = poDefault
+  Visible = True
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -50,8 +109,9 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 25
         Width = 121
-        Height = 24
+        Height = 22
         CharCase = ecUpperCase
+        Ctl3D = False
         EditLabel.Width = 27
         EditLabel.Height = 13
         EditLabel.Caption = 'Placa'
@@ -60,6 +120,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         TabOrder = 0
         Text = 'MKA2I59'
@@ -69,8 +130,9 @@ object frPesagem: TfrPesagem
         Left = 152
         Top = 25
         Width = 81
-        Height = 24
+        Height = 22
         TabStop = False
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 51
         EditLabel.Height = 13
@@ -80,6 +142,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 1
@@ -131,7 +194,8 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 41
         Width = 57
-        Height = 24
+        Height = 22
+        Ctl3D = False
         EditLabel.Width = 44
         EditLabel.Height = 16
         EditLabel.Caption = 'C'#243'digo'
@@ -140,6 +204,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         TabOrder = 0
         OnExit = edCodParceiroExit
@@ -149,8 +214,9 @@ object frPesagem: TfrPesagem
         Left = 104
         Top = 41
         Width = 369
-        Height = 24
+        Height = 22
         TabStop = False
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 51
         EditLabel.Height = 16
@@ -160,6 +226,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 1
@@ -168,8 +235,9 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 89
         Width = 465
-        Height = 24
+        Height = 22
         TabStop = False
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 59
         EditLabel.Height = 16
@@ -179,6 +247,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 2
@@ -187,8 +256,9 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 136
         Width = 209
-        Height = 24
+        Height = 22
         TabStop = False
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 57
         EditLabel.Height = 16
@@ -198,6 +268,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 3
@@ -243,7 +314,8 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 40
         Width = 57
-        Height = 24
+        Height = 22
+        Ctl3D = False
         EditLabel.Width = 33
         EditLabel.Height = 13
         EditLabel.Caption = 'C'#243'digo'
@@ -252,6 +324,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         TabOrder = 0
         OnExit = edCodProdutoExit
@@ -261,8 +334,9 @@ object frPesagem: TfrPesagem
         Left = 104
         Top = 40
         Width = 369
-        Height = 24
+        Height = 22
         TabStop = False
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 37
         EditLabel.Height = 13
@@ -272,6 +346,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 1
@@ -353,7 +428,8 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 41
         Width = 49
-        Height = 24
+        Height = 22
+        Ctl3D = False
         EditLabel.Width = 44
         EditLabel.Height = 16
         EditLabel.Caption = 'C'#243'digo'
@@ -362,6 +438,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         TabOrder = 0
       end
@@ -369,8 +446,9 @@ object frPesagem: TfrPesagem
         Left = 104
         Top = 41
         Width = 377
-        Height = 24
+        Height = 22
         TabStop = False
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 55
         EditLabel.Height = 16
@@ -380,6 +458,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 1
@@ -388,7 +467,8 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 89
         Width = 97
-        Height = 24
+        Height = 22
+        Ctl3D = False
         EditLabel.Width = 65
         EditLabel.Height = 16
         EditLabel.Caption = 'Nota Fisca'
@@ -397,6 +477,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         TabOrder = 2
       end
@@ -405,13 +486,16 @@ object frPesagem: TfrPesagem
         Top = 152
         Width = 465
         Height = 89
+        Ctl3D = False
+        ParentCtl3D = False
         TabOrder = 3
       end
       object edPesoNota: TLabeledEdit
         Left = 144
         Top = 89
         Width = 97
-        Height = 24
+        Height = 22
+        Ctl3D = False
         EditLabel.Width = 82
         EditLabel.Height = 16
         EditLabel.Caption = 'Peso na Nota'
@@ -420,6 +504,7 @@ object frPesagem: TfrPesagem
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentCtl3D = False
         ParentFont = False
         TabOrder = 4
       end
@@ -750,9 +835,10 @@ object frPesagem: TfrPesagem
         Left = 16
         Top = 40
         Width = 137
-        Height = 54
+        Height = 52
         TabStop = False
         BiDiMode = bdRightToLeft
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 29
         EditLabel.Height = 16
@@ -765,6 +851,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'DS-Digital'
         Font.Style = [fsBold]
         ParentBiDiMode = False
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 0
@@ -773,9 +860,10 @@ object frPesagem: TfrPesagem
         Left = 192
         Top = 40
         Width = 137
-        Height = 54
+        Height = 52
         TabStop = False
         BiDiMode = bdRightToLeft
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 31
         EditLabel.Height = 16
@@ -788,6 +876,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'DS-Digital'
         Font.Style = [fsBold]
         ParentBiDiMode = False
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 1
@@ -796,9 +885,10 @@ object frPesagem: TfrPesagem
         Left = 368
         Top = 40
         Width = 137
-        Height = 54
+        Height = 52
         TabStop = False
         BiDiMode = bdRightToLeft
+        Ctl3D = False
         DragMode = dmAutomatic
         EditLabel.Width = 44
         EditLabel.Height = 16
@@ -811,6 +901,7 @@ object frPesagem: TfrPesagem
         Font.Name = 'DS-Digital'
         Font.Style = [fsBold]
         ParentBiDiMode = False
+        ParentCtl3D = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 2

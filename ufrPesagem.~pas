@@ -29,7 +29,7 @@ type
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;
     GroupBox6: TGroupBox;
-    edPesoAtual: TLabeledEdit;
+    edPesoTara: TLabeledEdit;
     edPesoBruto: TLabeledEdit;
     edPesoLiquido: TLabeledEdit;
     btPesagem: TSpeedButton;
@@ -54,6 +54,7 @@ type
     procedure buscaSequencia;
     procedure buscaProduto;
     procedure buscaParceiro;
+    procedure limpar;
         { Private declarations }
   public
     { Public declarations }
@@ -175,6 +176,7 @@ end;
 procedure TfrPesagem.FormShow(Sender: TObject);
 begin
   edPlaca.SetFocus;
+  limpar;
 end;
 
 procedure TfrPesagem.edCodParceiroExit(Sender: TObject);
@@ -198,8 +200,8 @@ begin
       if not CaractereValido then
         begin
           showmessage('Digite somente numero!');
-          edCodParceiro.SetFocus;
           edCodParceiro.Clear;
+          edCodParceiro.SetFocus;
         end
           else
             buscaParceiro;
@@ -265,6 +267,28 @@ begin
   edNomeProduto.Text:= dmData.zQueryX.FieldByName('nome').AsString;
   edCodMotorista.SetFocus;
 
+end;
+
+procedure TfrPesagem.limpar;
+begin
+  edPlaca.Clear;
+  edSequencia.Clear;
+  edCodParceiro.Clear;
+  edNomeParceiro.Clear;
+  edEndereco.Clear;
+  edMunicipio.Clear;
+  edCodProduto.Clear;
+  edNomeProduto.Clear;
+  edPesoTara.Clear;
+  edPesoBruto.Clear;
+  edPesoLiquido.Clear;
+  edCodMotorista.Clear;
+  edNomeMotorista.Clear;
+  edNotaFiscal.Clear;
+  edPesoNota.Clear;
+  edObs.Clear;
+  grdMovimentacao.ItemIndex:=1;
+  grdTipoPesagem.ItemIndex:=1;
 end;
 
 end.

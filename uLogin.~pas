@@ -7,10 +7,18 @@ uses
   Dialogs, Mask, StdCtrls, Buttons, ExtCtrls;
 
 type
-  TForm1 = class(TForm)
-    LabeledEdit1: TLabeledEdit;
+  TfrLogin = class(TForm)
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    edUser: TEdit;
+    edPassword: TEdit;
     BitBtn1: TBitBtn;
-    MaskEdit1: TMaskEdit;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
+    procedure BitBtn2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -18,10 +26,32 @@ type
   end;
 
 var
-  Form1: TForm1;
+  frLogin: TfrLogin;
 
 implementation
 
+uses uConfigTags;
+
 {$R *.dfm}
+
+procedure TfrLogin.BitBtn2Click(Sender: TObject);
+begin
+  if (edUser.Text='jocinei') and (edPassword.Text='123') then
+    begin
+      if (frConfigTags = Nil) then
+      Application.CreateForm(TfrConfigTags,ConfigTags);
+      ConfigTags.Show;
+      close;
+    end
+  else
+    showMessage('Usuário ou senha incorreto.');
+end;
+
+procedure TfrLogin.FormShow(Sender: TObject);
+begin
+  //edUser.Clear;
+  //edPassword.Clear;
+  edUser.SetFocus;
+end;
 
 end.
