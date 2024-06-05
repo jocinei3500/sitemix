@@ -24,8 +24,6 @@ type
     ToolButton6: TToolButton;
     ToolButton12: TToolButton;
     ToolButton1: TToolButton;
-    Panel2: TPanel;
-    lbRelogio: TLabel;
     ppCadastro: TPopupMenu;
     OrdemdeServio1: TMenuItem;
     Compras1: TMenuItem;
@@ -121,16 +119,19 @@ end;
 
 procedure TfrMain.MenuItem4Click(Sender: TObject);
 begin
-  frLogin.showModal;
 
     if (frLogin= Nil) then
     Application.CreateForm(TfrLogin,frLogin);
-    frLogin.Show;
+    frLogin.ShowModal;
 end;
 
 procedure TfrMain.MenuItem1Click(Sender: TObject);
 begin
 frPesagem.ShowModal;
+
+  if (frPesagem = Nil) then
+    Application.CreateForm(TfrPesagem,frPesagem);
+    frPesagem.Show;
 end;
 
 procedure TfrMain.Produto1Click(Sender: TObject);
@@ -145,6 +146,7 @@ end;
 
 procedure TfrMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
+  canclose:=false;
   if messagebox(handle,'Deseja mesmo finalizar o sistema?','Finalizar',mb_Iconquestion+mb_YESNO)=idYes then
     begin
       application.Terminate;

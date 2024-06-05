@@ -21,16 +21,6 @@ uses
 begin
   Application.Initialize;
   Application.CreateForm(TfrMain, frMain);
-  Application.CreateForm(TfrBritagem, frBritagem);
-  Application.CreateForm(TfrPesagem, frPesagem);
-  Application.CreateForm(TfrCadProduto, frCadProduto);
-  Application.CreateForm(TfrCadParceiro, frCadParceiro);
-  Application.CreateForm(TfrBuscaParceiro, frBuscaParceiro);
-  Application.CreateForm(TfrBuscaProduto, frBuscaProduto);
-  Application.CreateForm(TfrGetPeso, frGetPeso);
   Application.CreateForm(TdmData, dmData);
-  Application.CreateForm(TfrConfigTags, frConfigTags);
-  Application.CreateForm(TfrLogin, frLogin);
-  Application.CreateForm(TfrProducaoBritagem, frProducaoBritagem);
   Application.Run;
 end.

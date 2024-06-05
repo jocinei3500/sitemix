@@ -5,6 +5,7 @@ object frMain: TfrMain
   Height = 563
   Caption = 'Sitemix Sistema de Gerenciamento'
   Color = clBtnFace
+  DefaultMonitor = dmMainForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -36,7 +37,7 @@ object frMain: TfrMain
     Left = 0
     Top = 73
     Width = 1072
-    Height = 410
+    Height = 451
     Align = alClient
     Picture.Data = {
       0A544A504547496D616765E2A00200FFD8FFE000104A46494600010101006000
@@ -5549,28 +5550,6 @@ object frMain: TfrMain
       Caption = 'ToolButton5'
       ImageIndex = 6
       Style = tbsSeparator
-    end
-  end
-  object Panel2: TPanel
-    Left = 0
-    Top = 483
-    Width = 1072
-    Height = 41
-    Align = alBottom
-    Color = 8026746
-    TabOrder = 1
-    object lbRelogio: TLabel
-      Left = 1208
-      Top = 16
-      Width = 47
-      Height = 20
-      Caption = 'Logica'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
     end
   end
   object ppCadastro: TPopupMenu

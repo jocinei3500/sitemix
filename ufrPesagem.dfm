@@ -70,6 +70,8 @@ object frPesagem: TfrPesagem
   OldCreateOrder = False
   Position = poDefault
   Visible = True
+  WindowState = wsMaximized
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -162,8 +164,8 @@ object frPesagem: TfrPesagem
       ParentFont = False
       TabOrder = 2
       object SpeedButton2: TSpeedButton
-        Left = 72
-        Top = 40
+        Left = 74
+        Top = 39
         Width = 23
         Height = 24
         Glyph.Data = {
@@ -282,8 +284,8 @@ object frPesagem: TfrPesagem
       Caption = 'Produto'
       TabOrder = 3
       object SpeedButton1: TSpeedButton
-        Left = 72
-        Top = 40
+        Left = 74
+        Top = 39
         Width = 23
         Height = 24
         Glyph.Data = {
@@ -396,8 +398,8 @@ object frPesagem: TfrPesagem
         Caption = 'Observa'#231#227'o'
       end
       object SpeedButton3: TSpeedButton
-        Left = 64
-        Top = 40
+        Left = 66
+        Top = 39
         Width = 23
         Height = 24
         Glyph.Data = {

@@ -127,7 +127,10 @@ end;
 
 procedure TfrMain.MenuItem1Click(Sender: TObject);
 begin
-frPesagem.ShowModal;
+
+  if (frPesagem = Nil) then
+    Application.CreateForm(TfrPesagem,frPesagem);
+    frPesagem.Show;
 end;
 
 procedure TfrMain.Produto1Click(Sender: TObject);

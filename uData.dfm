@@ -8,7 +8,6 @@ object dmData: TdmData
   object zConnLocal: TZConnection
     ControlsCodePage = cGET_ACP
     AutoCommit = False
-    OnLost = zConnLocalLost
     DisableSavepoints = False
     Port = 0
     Left = 24

@@ -24,14 +24,15 @@ type
     qCadProdRemote: TZQuery;
     qCadProdLocal: TZQuery;
     procedure DataModuleCreate(Sender: TObject);
-    procedure zConnLocalLost(Sender: TObject);
     procedure zConnRemoteLost(Sender: TObject);
   private
     { Private declarations }
   public
-  function LocalDatabaseConnect:boolean;
-    function RemotedataBaseConnect: Boolean;
-    { Public declarations }
+    FLocalConnected:boolean;
+    FRemoteConnected:boolean;
+    procedure LocalDatabaseConnect;
+    procedure RemotedataBaseConnect;
+
   end;
 
 var
@@ -44,11 +45,11 @@ uses uBritagem;
 
 {$R *.dfm}
 
-function TdmData.LocalDatabaseConnect: boolean;
+procedure TdmData.LocalDatabaseConnect;
  var
     path:string;
 begin
-  result:=false;
+  FLocalConnected:=false;
   zConnLocal.Protocol:='mariadb';
   path:=extractFilePath(application.ExeName)+'data\libmaria\libmariadb.dll';
   zConnLocal.LibraryLocation:=path;
@@ -60,18 +61,18 @@ begin
   zConnLocal.Password:='';
   try
     zConnLocal.Connected:=true;
-    result:=true;
+    FLocalConnected:=true;
   except
     showmessage('Não foi possível conectar ao banco de dados!');
-    result:=false;
+    FLocalConnected:=false;
   end;
 end;
 
-function TDmData.RemoteDataBaseConnect:Boolean;
-var
-  LPath:String;
+procedure TDmData.RemoteDataBaseConnect;
+  var
+    LPath:String;
 begin
-  result:=false;
+  FRemoteConnected:=false;
   zConnRemote.Protocol:='mariadb';
   LPath:=extractFilePath(application.ExeName)+'data\libmaria\libmariadb.dll';
   zConnRemote.LibraryLocation:=LPath;
@@ -85,10 +86,10 @@ begin
     zConnRemote.Connected:=true;
     tProducao.TableName:='producao_britagem';
     tProducao.Active:=true;
-    result:=true;
+    FRemoteConnected:=true;
   except
     showmessage('Não foi possível conectar ao banco de dados!');
-    result:=false;
+    FRemoteConnected:=false;
   end;
 end;
 procedure TdmData.DataModuleCreate(Sender: TObject);
@@ -96,16 +97,9 @@ begin
   LocalDatabaseConnect;
 end;
 
-procedure TdmData.zConnLocalLost(Sender: TObject);
-begin
-  frBritagem.tReadPlc.Enabled:=false;
-  showMessage('O banco de Dados perdeu a conexão');
-end;
-
 procedure TdmData.zConnRemoteLost(Sender: TObject);
 begin
-  frBritagem.tReadPlc.Enabled:=false;
-  zConnRemote.Disconnect;
+  zConnRemote.Connected:=false;
 end;
 
 end.

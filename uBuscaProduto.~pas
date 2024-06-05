@@ -49,6 +49,8 @@ end;
 
 procedure TfrBuscaProduto.FormShow(Sender: TObject);
 begin
+  //zera variaveis de producao
+  FProducao_po:=0; FProducao_pedrisco:=0; FProducao_34:=0; FProducao_pedra2:=0;
   edBuscaProduto.SetFocus;
   edBuscaProduto.Clear;
   dmData.qProduto.close;
@@ -81,7 +83,7 @@ var
 begin
   id := dbgProdutos.DataSource.DataSet.FieldByName('id').AsInteger;
   dmData.zQueryX.Close;
-  dmData.zQueryX.SQL.Text:='SELECT * FROM PARCEIROS WHERE id = :id';
+  dmData.zQueryX.SQL.Text:='SELECT * FROM PRODUTOS WHERE id = :id';
   dmData.zQueryX.ParamByName('id').AsInteger := id; // Define o valor do parâmetro ":id"
   dmData.zQueryX.Open;
   frPesagem.edCodProduto.Text:= IntToStr(dmData.zQueryX.FieldByName('id').AsInteger);

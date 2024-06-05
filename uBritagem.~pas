@@ -39,7 +39,6 @@ type
     M5: TShape;
     M6: TShape;
     M9: TShape;
-    imgPrincipal: TImage;
     Label27: TLabel;
     Label28: TLabel;
     Label29: TLabel;
@@ -60,7 +59,6 @@ type
     Label30: TLabel;
     edProdPo: TPanel;
     tTryConnect: TTimer;
-    edProdPoH: TEdit;
     Panel1: TPanel;
     edProdPedra2: TPanel;
     Edit2: TEdit;
@@ -87,12 +85,19 @@ type
     Panel11: TPanel;
     Edit16: TEdit;
     Edit17: TEdit;
-    BitBtn1: TBitBtn;
     tReconnect: TTimer;
     Timer1: TTimer;
     Label5: TLabel;
     edEnergiaBritagem: TLabel;
     edEnergiaUsina: TLabel;
+    Panel2: TPanel;
+    Image1: TImage;
+    imgPrincipal: TImage;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    lbHorimParcial: TLabel;
+    edProdPoH: TPanel;
     procedure FormShow(Sender: TObject);
     procedure tReadPLCTimer(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
@@ -100,15 +105,19 @@ type
     procedure tTryConnectTimer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure tReconnectTimer(Sender: TObject);
-    procedure BitBtn1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure Label7MouseLeave(Sender: TObject);
+    procedure Label7MouseEnter(Sender: TObject);
+    procedure Label7Click(Sender: TObject);
   private
+    FIntervalSaveRemote:integer;//a cada 10 segundos é cadastrada no banco de dado remoto.=
+    FIntervalAvgProd:integer;//so inicia o cálculo de produção após 5 segundos.
     procedure saveTagsToBase;
     procedure buscaConfig;
     function readCoil(memory:integer):integer;
     function buscaDigitais(coil:integer):integer;
     procedure Reconnect;
     procedure restaurarDefault;
-    { Private declarations }
   public
     { Public declarations }
   end;
@@ -116,15 +125,12 @@ type
 var
   frBritagem: TfrBritagem;
   tag_po, tag_pedrisco, tag_pedra34, tag_pedra2, tag_energia_usina,tag_energia_britagem:integer;
+  tag_hm_total_br, tag_hm_hora_br, tag_hm_mm_br:integer;
   modBusHost:string;
   intervalo_clp_britagem:cardinal;//intervalo do timer lê variaveis do clp
   tDigitalPLC:array[1..20] of integer;//entradas digitais dOS MOTORES
-  tCoil:array[1..13] of integer;
-  bCoil:array[1..4] of integer;
-  pCoil:array[1..3]of integer;
-  gProducao:array[1..8] of double;
-  FCanClose, FConnected:boolean;
-  FTryConnect:integer;
+  tCoil:array[1..20] of integer;
+  FProducao_po, FProducao_pedrisco, FProducao_pedra34, FProducao_pedra2:Real;
 
 implementation
 
@@ -132,20 +138,6 @@ uses uData, uProducaoBritagem;
 
 {$R *.dfm}
 
-
-
-
-procedure Wait(Delay: Integer);
-var
-  TargetTime: TDateTime;
-begin
-  TargetTime := Now + Delay / 86400000; // Converte milissegundos em fração de dia
-  while Now < TargetTime do
-  begin
-    Application.ProcessMessages; // Processa mensagens pendentes
-    Sleep(10); // Pausa por 10 milissegundos para evitar uso excessivo de CPU
-  end;
-end;
 
 function Ping(const Host: string): Boolean;
 var
@@ -172,13 +164,17 @@ end;
   var
     Data: array[0..4096] of Word;
     dPo, dPedrisco,dpedra34, dPedra2, dEnergiaUsina,dEnergiaBritagem:Real;
-    producao_po, producao_pedrisco, producao_pedra34, producao_pedra2:Real;
+    dHmTotalBR, dHmHoraBr, dHmMmBr :Real;
     date, hora:string;
     i:integer;//usado para loço for
-    Shape:TShape;
+    Shape:TShape;//usado pra trocar a cor do shape que indica o motor ligado
 begin
+
   //zerando as variáveis pra não dar erro.
   dPO:=0; dPedrisco:=0; dPedra34:=0; dPedra2:=0; dEnergiaUsina:=0;dEnergiaBritagem:=0;
+  self.FIntervalSaveRemote:=FIntervalSaveremote+1;
+  self.FIntervalAvgProd:= FIntervalAvgProd+1;
+
 
   date:=formatDateTime('yyyy-mm-dd', now);
   hora:=formatDateTime('hh:nn:ss',now);
@@ -186,6 +182,7 @@ begin
     if mctPLC.ReadHoldingRegisters(tag_po,1, Data)then//leitura do pó
       begin
         dPo:=Data[0]/4;
+
         edProdPo.Caption:=FloatToStr(Round(dPo))+' ';
       end;
     if mctPLC.ReadHoldingRegisters(tag_pedrisco,10, Data)then//pedrisco
@@ -214,9 +211,26 @@ begin
         edEnergiaBritagem.Caption:=' '+ FloatToStr(dEnergiaBritagem);
       end;
 
+    if mctPLC.ReadHoldingRegisters(tag_hm_total_br,1, Data)then//horímetro total britagem
+      begin
+        dHmTotalBR:=Data[0];
+        edEnergiaUsina.Caption:=FloatToStr(dHmTotalBR);
+      end;
+
+      if mctPLC.ReadHoldingRegisters(tag_hm_hora_br,1, Data)then//horímetro parcial hora britagem
+      begin
+        dHmHoraBR:=Data[0];
+      end;
+
+      if mctPLC.ReadHoldingRegisters(tag_hm_mm_br,1, Data)then//horímetro parcial minutos britagem
+      begin
+        dHmMmBR:=Data[0];
+        lbHorimParcial.Caption:=FloatToStr(dHmHoraBr)+ ':'+ FloatToStr(dHmMmBR);
+      end;
+
 
     //laço for leê as entradas digitais M.
-    for i:=1 to 13 do
+    for i:=1 to 20 do
       begin
         tCoil[i]:=readCoil(tDigitalPLC[i]);
         Shape := FindComponent('M' + IntToStr(i)) as TShape;
@@ -224,7 +238,7 @@ begin
           if tCoil[i]=1 then
             Shape.Brush.Color:=$0040FF00
           else
-            Shape.Brush.Color:=clSilver;
+            Shape.Brush.Color:=$006666FF;
       end;
 
   except
@@ -235,29 +249,56 @@ begin
   end;
 
   try
-    // Inicia busca da pesagem id -10 para fazer a média de produção
-    dmData.qCadProdLocal.Close;
-    dmData.qCadProdLocal.SQL.Text:='SELECT * FROM producao_britagem WHERE id='+
-    '(SELECT MAX(id) FROM producao_britagem)-9';
-    dmData.qCadProdLocal.Open;
+    if self.FIntervalAvgProd > 10 then
+      begin
+        // Inicia busca da pesagem id -10 para fazer a média de produção
+        dmData.qCadProdLocal.Close;
+        dmData.qCadProdLocal.SQL.Text:='SELECT * FROM producao_britagem WHERE id='+
+                                        '(SELECT MAX(id) FROM producao_britagem)-9';
+        dmData.qCadProdLocal.Open;
+        if dmData.qCadProdLocal.RecordCount>0 then
+          begin
+            FProducao_po:= dmData.qCadProdLocal.FieldByName('po').AsFloat;
+            FProducao_pedrisco:= dmData.qCadProdLocal.FieldByName('pedrisco').AsFloat;
+            FProducao_pedra34:= dmData.qCadProdLocal.FieldByName('pedra34').AsFloat;
+            FProducao_pedra2:= dmData.qCadProdLocal.FieldByName('pedra2').AsFloat;
+            FProducao_po:=(dpo-FProducao_po)/10*3600;
+            if FProducao_po<0 then FProducao_po:=0;//caso o valor de menor que 0 então fica 0.
+            edProdPoH.Caption:=' '+ FloatToStr(FProducao_po)+'';
+            FProducao_pedrisco:=(dpedrisco-FProducao_pedrisco)/10*3600;
+            if FProducao_pedrisco<0 then FProducao_pedrisco:=0;
+            FProducao_pedra34:=(dpedra34-FProducao_pedra34)/10*3600;
+            if FProducao_pedra34 < 0 then FProducao_pedra34:=0;
+            FProducao_pedra2:=(dpedra2-FProducao_pedra2)/10*3600;
+            if FProducao_pedra2 < 0 then FProducao_pedra2:=0;
+
+            if self.FIntervalAvgProd = 11 then
+              begin
+                dmData.qCadProdLocal.Close;
+                dmData.qCadProdLocal.SQL.Text:='UPDATE PRODUCAO_BRITAGEM SET PRODUCAO_PO=:producao_po, PRODUCAO_PEDRISCO='+
+                                              ' :producao_pedrisco, PRODUCAO_PEDRA34= :producao_pedra34, PRODUCAO_PEDRA2='+
+                                              ':producao_pedra2 where id <= (select max(id) from producao_britagem) and id > '+
+                                              '(select max(id) from producao_britagem)-10';
+                dmData.qCadProdLocal.ParamByName('producao_po').AsFloat:=FProducao_po;
+                dmData.qCadProdLocal.ParamByName('producao_pedrisco').AsFloat:=FProducao_pedrisco;
+                dmData.qCadProdLocal.ParamByName('producao_pedra34').AsFloat:=FProducao_pedra34;
+                dmData.qCadProdLocal.ParamByName('producao_pedra2').AsFloat:=FProducao_pedra2;
+                dmData.qCadProdLocal.ExecSQL;
+            end;
+          end;
+        end
+      else
+        begin
+           FProducao_po:=0;
+           FProducao_pedrisco:=0;
+           FProducao_pedra34:=0;
+           FProducao_pedra2:=0;
+        end;
+
   except
     ShowMessage('Erro ao tentar acessar o banco de dados.');
   end;
-    producao_po:= dmData.qCadProdLocal.FieldByName('po').AsFloat;
-    producao_pedrisco:= dmData.qCadProdLocal.FieldByName('pedrisco').AsFloat;
-    producao_pedra34:= dmData.qCadProdLocal.FieldByName('pedra34').AsFloat;
-    producao_pedra2:= dmData.qCadProdLocal.FieldByName('pedra2').AsFloat;
 
-
-    producao_po:=(dpo-producao_po)/10*3600;
-    if producao_po <0 then producao_po:=0;
-    edProdPoH.Text:=' '+ FloatToStr(producao_po)+'';
-    producao_pedrisco:=(dpedrisco-producao_pedrisco)/10*3600;
-    if producao_pedrisco <0 then producao_pedrisco:=0;
-    producao_pedra34:=(dpedra34-producao_pedra34)/10*3600;
-    if producao_pedra34 <0 then producao_pedra34:=0;
-    producao_pedra2:=(dpedra2-producao_pedra2)/10*3600;
-    if producao_pedra2 <0 then producao_pedra2:=0;
     try
       try
         // Inicia cadastro local dos dados.
@@ -270,13 +311,13 @@ begin
         ' :producao_pedra34, :pedra2, :producao_pedra2, :energia_usina, :energia_britagem, :data, :hora)');
         dmData.qCadProdLocal.ParamByName('id').AsString:='null';
         dmData.qCadProdLocal.ParamByName('po').AsFloat:=dPo;
-        dmData.qCadProdLocal.ParamByName('producao_po').AsFloat:=producao_po;
+        dmData.qCadProdLocal.ParamByName('producao_po').AsFloat:=FProducao_po;
         dmData.qCadProdLocal.ParamByName('pedrisco').AsFloat:=dPedrisco;
-        dmData.qCadProdLocal.ParamByName('producao_pedrisco').AsFloat:=producao_pedrisco;
+        dmData.qCadProdLocal.ParamByName('producao_pedrisco').AsFloat:=FProducao_pedrisco;
         dmData.qCadProdLocal.ParamByName('pedra34').AsFloat:=dpedra34;
-        dmData.qCadProdLocal.ParamByName('producao_pedra34').AsFloat:=producao_pedra34;
+        dmData.qCadProdLocal.ParamByName('producao_pedra34').AsFloat:=FProducao_pedra34;
         dmData.qCadProdLocal.ParamByName('pedra2').AsFloat:=dpedra2;
-        dmData.qCadProdLocal.ParamByName('producao_pedra2').AsFloat:=producao_pedra2;
+        dmData.qCadProdLocal.ParamByName('producao_pedra2').AsFloat:=FProducao_pedra2;
         dmData.qCadProdLocal.ParamByName('energia_usina').AsFloat:=dEnergiaUsina;
         dmData.qCadProdLocal.ParamByName('energia_britagem').AsFloat:=dEnergiaBritagem;
         dmData.qCadProdLocal.ParamByName('data').AsString:=date;
@@ -288,6 +329,11 @@ begin
         showmessage('Não foi  gravar no abnco de dados'+#13+
         'verifique a conexão com o banco de dados local!');
       end;
+
+
+      if FIntervalSaveRemote >10 then
+        exit;
+      FIntervalSaveRemote:=0;
       try
         //Inicia o cadastro no banco remoto.
         dmData.qCadProdRemote.close;
@@ -299,13 +345,13 @@ begin
         ' :producao_pedra34, :pedra2, :producao_pedra2, :energia_usina, :energia_britagem, :data, :hora)');
         dmData.qCadProdRemote.ParamByName('id').AsString:='null';
         dmData.qCadProdRemote.ParamByName('po').AsFloat:=dPo;
-        dmData.qCadProdRemote.ParamByName('producao_po').AsFloat:=producao_po;
+        dmData.qCadProdRemote.ParamByName('producao_po').AsFloat:=FProducao_po;
         dmData.qCadProdRemote.ParamByName('pedrisco').AsFloat:=dPedrisco;
-        dmData.qCadProdRemote.ParamByName('producao_pedrisco').AsFloat:=producao_pedrisco;
+        dmData.qCadProdRemote.ParamByName('producao_pedrisco').AsFloat:=FProducao_pedrisco;
         dmData.qCadProdRemote.ParamByName('pedra34').AsFloat:=dpedra34;
-        dmData.qCadProdRemote.ParamByName('producao_pedra34').AsFloat:=producao_pedra34;
+        dmData.qCadProdRemote.ParamByName('producao_pedra34').AsFloat:=FProducao_pedra34;
         dmData.qCadProdRemote.ParamByName('pedra2').AsFloat:=dpedra2;
-        dmData.qCadProdRemote.ParamByName('producao_pedra2').AsFloat:=producao_pedra2;
+        dmData.qCadProdRemote.ParamByName('producao_pedra2').AsFloat:=FProducao_pedra2;
         dmData.qCadProdRemote.ParamByName('energia_usina').AsFloat:=dEnergiaUsina;
         dmData.qCadProdRemote.ParamByName('energia_britagem').AsFloat:=dEnergiaBritagem;
         dmData.qCadProdRemote.ParamByName('data').AsString:=date;
@@ -325,6 +371,9 @@ end;
 
 procedure TfrBritagem.FormShow(Sender: TObject);
 begin
+    //zera variaveis de producao
+  FProducao_po:=0; FProducao_pedrisco:=0; FProducao_pedra34:=0; FProducao_pedra2:=0;
+
   restaurarDefault;
   buscaConfig;
   tReadPLC.Interval:=intervalo_clp_britagem;//pega a configuração salva no banco de dados
@@ -344,7 +393,7 @@ end;
 
 
 
-procedure TfrBritagem.buscaConfig;
+procedure TfrBritagem.buscaConfig;//Busca configurações salvas no banco de dados.
 var
   i:integer;
 begin
@@ -391,11 +440,31 @@ begin
   modBusHost:= dmData.zQueryX.FieldByName('valor').AsString;
   dmData.zQueryX.Close;
 
-  dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';
-  dmData.zQueryX.ParamByName('nome').AsString := 'intervalo_busca_clp'; // Define o valor do parâmetro ":id"
+  dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';//busca TAG intervalo de SCAN do clp
+  dmData.zQueryX.ParamByName('nome').AsString := 'intervalo_busca_clp';
   dmData.zQueryX.Open;
   intervalo_clp_britagem:= dmData.zQueryX.FieldByName('valor').AsInteger;
   dmData.zQueryX.Close;
+
+  dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';//busca TAG do homímetro da britagem
+  dmData.zQueryX.ParamByName('nome').AsString := 'hm_total_br';
+  dmData.zQueryX.Open;
+  tag_hm_total_br:= dmData.zQueryX.FieldByName('valor').AsInteger;
+  dmData.zQueryX.Close;
+
+  dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';//busca TAG do homímetro da britagem
+  dmData.zQueryX.ParamByName('nome').AsString := 'hm_hora_br';
+  dmData.zQueryX.Open;
+  tag_hm_hora_br:= dmData.zQueryX.FieldByName('valor').AsInteger;
+  dmData.zQueryX.Close;
+
+  dmData.zQueryX.SQL.Text:='SELECT * FROM config_tags where nome = :nome';//busca TAG do homímetro da britagem
+  dmData.zQueryX.ParamByName('nome').AsString := 'hm_mm_br';
+  dmData.zQueryX.Open;
+  tag_hm_mm_br:= dmData.zQueryX.FieldByName('valor').AsInteger;
+  dmData.zQueryX.Close;
+
+  //#### BUSCA TODAS AS TAGS DIGITAIS
   i:=1;
   for i:=1 to 20 do
     begin
@@ -473,7 +542,9 @@ end;
 
 procedure TfrBritagem.edProdPoDblClick(Sender: TObject);
 begin
-  frProducaoBritagem.showModal;
+    if (frProducaoBritagem = Nil) then
+    Application.CreateForm(TfrProducaoBritagem,frProducaoBritagem);
+      frProducaoBritagem.Show;
 end;
 
 procedure TfrBritagem.tTryConnectTimer(Sender: TObject);
@@ -489,11 +560,12 @@ begin
       exit;
     end;
   cursor:=crDefault;
-  if dmData.RemoteDataBaseConnect= false then
+  dmData.RemotedataBaseConnect;
+  dmData.LocalDatabaseConnect;
+  if dmData.FLocalConnected=false then
     exit;
-  if dmData.LocalDataBaseConnect= false then
+  if dmData.FRemoteConnected=false then
     exit;
-
   tReadPLC.Enabled:=true;
 end;
 
@@ -501,18 +573,14 @@ procedure TfrBritagem.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   TReadPLC.Enabled:=false;
   dmData.zConnRemote.Disconnect;
+  action := CaFree;
+  Release;
+  frBritagem:= Nil;
 end;
 
 procedure TfrBritagem.tReconnectTimer(Sender: TObject);
 begin
   reconnect;
-end;
-
-procedure TfrBritagem.BitBtn1Click(Sender: TObject);
-begin
-  //timer1.Enabled:=true;
-  saveTagsToBase;
-  //reconnect;
 end;
 
 procedure TfrBritagem.Reconnect;
@@ -524,9 +592,11 @@ begin
       exit;
     end;
   cursor:=crDefault;
-  if dmData.RemoteDataBaseConnect= false then
+  dmData.RemotedataBaseConnect;
+  dmData.LocalDatabaseConnect;
+  if dmData.FLocalConnected=false then
     exit;
-  if dmData.LocalDataBaseConnect= false then
+  if dmData.FRemoteConnected=false then
     exit;
   tReadPLC.Enabled:=true;
   tReconnect.Enabled:=false;
@@ -543,12 +613,34 @@ begin
       begin
         M := FindComponent('M' + IntToStr(i)) as TShape;
         if M <> nil then//coloca todas as shapes com off
-            M.Brush.Color:=clSilver;
+            M.Brush.Color:=$006666FF;
       end;
   edProdpo.Caption:='';
   edEnergiaBritagem.Caption:='';
   edEnergiaUsina.Caption:='';
 
+end;
+
+procedure TfrBritagem.SpeedButton1Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrBritagem.Label7MouseLeave(Sender: TObject);
+begin
+  label7.Transparent:=true;
+  label7.Font.Color:=clBlack;
+end;
+
+procedure TfrBritagem.Label7MouseEnter(Sender: TObject);
+begin
+label7.Transparent:=false;
+  label7.Font.Color:=clWhite;
+end;
+
+procedure TfrBritagem.Label7Click(Sender: TObject);
+begin
+  close;
 end;
 
 end.

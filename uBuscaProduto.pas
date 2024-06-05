@@ -49,6 +49,7 @@ end;
 
 procedure TfrBuscaProduto.FormShow(Sender: TObject);
 begin
+  
   edBuscaProduto.SetFocus;
   edBuscaProduto.Clear;
   dmData.qProduto.close;

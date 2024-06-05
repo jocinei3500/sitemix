@@ -50,6 +50,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure edCodParceiroExit(Sender: TObject);
     procedure edCodProdutoExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     procedure buscaSequencia;
     procedure buscaProduto;
@@ -65,7 +66,7 @@ var
 
 implementation
 
-uses uGetPeso, uBuscaParceiro, uBuscaProduto, uData;
+uses uGetPeso, uBuscaParceiro, uBuscaProduto, uData, uBritagem;
 
 {$R *.dfm}
 
@@ -289,6 +290,13 @@ begin
   edObs.Clear;
   grdMovimentacao.ItemIndex:=1;
   grdTipoPesagem.ItemIndex:=1;
+end;
+
+procedure TfrPesagem.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  action := CaFree;
+  Release;
+  frBritagem:= Nil;
 end;
 
 end.
